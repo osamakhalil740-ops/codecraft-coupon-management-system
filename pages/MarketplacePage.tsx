@@ -355,8 +355,8 @@ const MarketplacePage: React.FC = () => {
             <div className="bg-white shadow-soft border-b">
                 <div className="max-w-7xl mx-auto px-4 py-12">
                     <div className="text-center mb-12">
-                        <h1 className="text-6xl font-bold gradient-text mb-6">Discover Local Shops</h1>
-                        <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold gradient-text mb-6 text-balance">Discover Local Shops</h1>
+                        <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
                             Explore amazing deals from trusted local businesses in your area and save money while supporting your community
                         </p>
                     </div>
@@ -419,10 +419,10 @@ const MarketplacePage: React.FC = () => {
 
                 {/* Results Summary */}
                 <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
-                    <h2 className="text-3xl font-bold text-gray-800">
+                    <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
                         {filteredShops.length} {filteredShops.length === 1 ? 'Shop' : 'Shops'} Found
                     </h2>
-                    <div className="text-sm text-gray-600 bg-white px-4 py-2 rounded-full shadow-soft">
+                    <div className="text-sm text-gray-600 bg-white px-4 py-2 rounded-full shadow-soft border border-gray-100">
                         💡 Click on any shop to explore their exclusive deals
                     </div>
                 </div>

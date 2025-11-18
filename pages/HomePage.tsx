@@ -74,10 +74,10 @@ const HomePage: React.FC = () => {
                 <div className="blur-blob -left-12 bottom-0" />
                 <div className="relative z-10 max-w-3xl">
                     <span className="hero-pill mb-6 inline-flex">{t('home.hero.badge')}</span>
-                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight">
+                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-balance">
                         {t('home.hero.title')}
                     </h1>
-                    <p className="text-lg md:text-xl text-slate-100/90 mt-4 max-w-2xl">
+                    <p className="text-lg md:text-xl text-slate-100/90 mt-6 max-w-2xl leading-relaxed">
                         {t('home.hero.subtitle')}
                     </p>
                     <div className="flex flex-wrap gap-4 mt-8">

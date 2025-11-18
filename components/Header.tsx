@@ -44,16 +44,16 @@ const Header: React.FC = () => {
           {user ? (
             <div className="flex items-center gap-4">
               {/* Role-specific credits display */}
-              <div className="hidden md:flex items-center gap-2 bg-gray-100 px-3 py-1 rounded-full">
-                <span className="text-xs font-medium text-gray-600">
+              <div className="hidden md:flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-gray-200 px-4 py-2 rounded-full shadow-soft">
+                <span className="text-sm font-medium text-gray-700">
                   {user.roles.includes('shop-owner') ? '🏪' : 
                    user.roles.includes('affiliate') ? '📢' : 
                    user.roles.includes('admin') ? '👑' : '🛍️'}
                 </span>
-                <span className="text-sm font-semibold text-gray-800">
+                <span className="text-sm font-bold text-gray-800">
                   {user.credits.toLocaleString()}
                 </span>
-                <span className="text-xs text-gray-500">credits</span>
+                <span className="text-xs text-gray-500 font-medium">credits</span>
               </div>
               
               <Link

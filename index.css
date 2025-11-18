@@ -412,6 +412,13 @@ body::before {
   transition: var(--transition-smooth);
   overflow: hidden;
   box-shadow: var(--shadow-soft);
+  width: 100%;
+  text-align: center;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 }
 
 .btn-calm::before {
@@ -437,6 +444,41 @@ body::before {
 
 .btn-calm:active {
   transform: translateY(0px) scale(0.98);
+}
+
+/* Fix responsive grid issues */
+.grid {
+  display: grid;
+  width: 100%;
+}
+
+/* Ensure proper mobile responsive layout */
+@media (max-width: 640px) {
+  .glass-panel {
+    padding: 1.5rem;
+  }
+  
+  .btn-primary,
+  .btn-calm {
+    padding: 0.875rem 1.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .text-6xl {
+    font-size: 2.5rem;
+  }
+  
+  .text-5xl {
+    font-size: 2.25rem;
+  }
+  
+  .text-4xl {
+    font-size: 2rem;
+  }
+  
+  .text-3xl {
+    font-size: 1.75rem;
+  }
 }
 
 /* Floating Elements */
@@ -479,6 +521,8 @@ body::before {
   backdrop-filter: blur(20px);
   font-size: 0.95rem;
   line-height: 1.5;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .form-input:focus {
@@ -511,6 +555,21 @@ body::before {
 
 .text-balance {
   text-wrap: balance;
+}
+
+/* Line clamp utilities for proper text truncation */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 /* Gentle Status Badges */
