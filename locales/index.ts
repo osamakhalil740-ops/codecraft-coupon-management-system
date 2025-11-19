@@ -103,7 +103,18 @@ export const translations = {
       referred: "You were referred by: {{referrer}}",
       dontHaveAccount: "Don't have an account?",
       signUp: "Sign up",
-      welcomeBack: "Welcome back"
+      welcomeBack: "Welcome back",
+      createAccount: "Create Account",
+      fullNameLabel: "Full Name",
+      signupAsLabel: "Sign up as",
+      roleUser: "Customer",
+      roleShopOwner: "Shop Owner",
+      roleAffiliate: "Affiliate",
+      referredWelcome: "Welcome! You've been referred.",
+      referredMessage: "You're signing up through a referral link.",
+      alreadyHaveAccount: "Already have an account?",
+      login: "Sign In",
+      createAccountButton: "Create Account"
     },
     welcomeBack: "Welcome back",
     Email: "Email",
@@ -253,8 +264,68 @@ export const translations = {
     qrCodeModal: {
       title: "Share this QR Code or Link"
     },
+    shopOwner: {
+      referral: {
+        title: "Referral Program",
+        description: "Invite other businesses to join and earn credits when they sign up and create their first coupon."
+      },
+      myCoupons: "My Coupons",
+      shareCoupon: "Share Coupon",
+      createCoupon: {
+        title: "Create New Coupon",
+        couponTitle: "Coupon Title",
+        description: "Description",
+        discountType: "Discount Type",
+        percentage: "Percentage",
+        discountValue: "Discount Value",
+        validityType: "Validity Type",
+        expiryDate: "Expiry Date",
+        maxUses: "Maximum Uses",
+        affiliateCommission: "Affiliate Commission",
+        createButton: "Create Coupon",
+        fixedAmount: "Fixed Amount",
+        validityDays: "Validity Days",
+        creating: "Creating..."
+      },
+      myReferrals: "My Referrals",
+      referralsTable: {
+        shopName: "Shop Name",
+        status: "Status",
+        signupDate: "Signup Date"
+      },
+      noReferrals: "No referrals yet. Start inviting businesses to earn credits!"
+    },
+    couponCard: {
+      status: {
+        active: "Active",
+        inactive: "Inactive"
+      },
+      off: "Off",
+      egpOff: "EGP Off",
+      validUntil: "Valid until",
+      expiresOn: "Expires on",
+      noExpiry: "No expiry",
+      usesLeft: "uses left",
+      views: "views",
+      earn: "Earn",
+      onRedeem: "on redeem"
+    },
+    user: {
+      noCoupons: {
+        title: "No coupons available yet"
+      }
+    },
     CodeCraft: "CodeCraft",
-    English: "English"
+    English: "English",
+    "by store": "by store",
+    "Customer earns": "Customer earns",
+    "Credits on redemption": "Credits on redemption",
+    "Cost:": "Cost:",
+    "credits per coupon": "credits per coupon",
+    "Each coupon you create will cost exactly 50 credits regardless of settings": "Each coupon you create will cost exactly 50 credits regardless of settings",
+    "Customer Reward Points": "Customer Reward Points",
+    "Points credited to customer when they redeem this coupon": "Points credited to customer when they redeem this coupon",
+    "mm/dd/yyyy": "mm/dd/yyyy"
   },
   ar: {
     common: {
@@ -356,7 +427,21 @@ export const translations = {
       loginButton: "تسجيل دخول",
       signupButton: "إنشاء حساب",
       processing: "جاري المعالجة...",
-      referred: "تم إحالتك من قبل: {{referrer}}"
+      referred: "تم إحالتك من قبل: {{referrer}}",
+      dontHaveAccount: "ليس لديك حساب؟",
+      signUp: "سجل",
+      welcomeBack: "مرحبا بعودتك",
+      createAccount: "إنشاء حساب",
+      fullNameLabel: "الاسم الكامل",
+      signupAsLabel: "سجل كـ",
+      roleUser: "عميل",
+      roleShopOwner: "صاحب متجر",
+      roleAffiliate: "شريك تابع",
+      referredWelcome: "مرحباً! تم إحالتك.",
+      referredMessage: "أنت تسجل من خلال رابط إحالة.",
+      alreadyHaveAccount: "لديك حساب بالفعل؟",
+      login: "تسجيل دخول",
+      createAccountButton: "إنشاء حساب"
     },
     dashboard: {
       welcome: "مرحبًا بعودتك",
@@ -501,7 +586,69 @@ export const translations = {
     },
     qrCodeModal: {
       title: "شارك رمز QR أو الرابط"
-    }
+    },
+    shopOwner: {
+      referral: {
+        title: "برنامج الإحالة",
+        description: "ادع الشركات الأخرى للانضمام واكسب ائتمانات عندما يسجلون وينشئون قسيمتهم الأولى."
+      },
+      myCoupons: "قسائمي",
+      shareCoupon: "مشاركة القسيمة",
+      createCoupon: {
+        title: "إنشاء قسيمة جديدة",
+        couponTitle: "عنوان القسيمة",
+        description: "الوصف",
+        discountType: "نوع الخصم",
+        percentage: "النسبة المئوية",
+        discountValue: "قيمة الخصم",
+        validityType: "نوع الصلاحية",
+        expiryDate: "تاريخ الانتهاء",
+        maxUses: "الحد الأقصى للاستخدامات",
+        affiliateCommission: "عمولة الشريك التابع",
+        createButton: "إنشاء قسيمة",
+        fixedAmount: "مبلغ ثابت",
+        validityDays: "أيام الصلاحية",
+        creating: "جاري الإنشاء..."
+      },
+      myReferrals: "إحالاتي",
+      referralsTable: {
+        shopName: "اسم المتجر",
+        status: "الحالة",
+        signupDate: "تاريخ التسجيل"
+      },
+      noReferrals: "لا توجد إحالات حتى الآن. ابدأ في دعوة الشركات لكسب الائتمانات!"
+    },
+    couponCard: {
+      status: {
+        active: "نشط",
+        inactive: "غير نشط"
+      },
+      off: "خصم",
+      egpOff: "جنيه خصم",
+      validUntil: "صالح حتى",
+      expiresOn: "ينتهي في",
+      noExpiry: "بدون انتهاء",
+      usesLeft: "استخدام متبقي",
+      views: "مشاهدات",
+      earn: "اكسب",
+      onRedeem: "عند الاسترداد"
+    },
+    user: {
+      noCoupons: {
+        title: "لا توجد قسائم متاحة حتى الآن"
+      }
+    },
+    CodeCraft: "CodeCraft",
+    English: "العربية",
+    "by store": "من المتجر",
+    "Customer earns": "العميل يكسب",
+    "Credits on redemption": "ائتمانات عند الاسترداد",
+    "Cost:": "التكلفة:",
+    "credits per coupon": "ائتمانات لكل قسيمة",
+    "Each coupon you create will cost exactly 50 credits regardless of settings": "كل قسيمة تنشئها ستكلف بالضبط 50 ائتماناً بغض النظر عن الإعدادات",
+    "Customer Reward Points": "نقاط مكافأة العميل",
+    "Points credited to customer when they redeem this coupon": "النقاط المضافة للعميل عندما يستردي هذه القسيمة",
+    "mm/dd/yyyy": "يوم/شهر/سنة"
   }
 };
 
