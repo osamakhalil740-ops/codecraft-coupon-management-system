@@ -151,18 +151,18 @@ const HomePage: React.FC = () => {
                 </div>
             </section>
 
-            {/* Account Type Selection Section - NEW */}
-            <section className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-8 border border-blue-100">
-                <div className="text-center mb-8">
-                    <h2 className="text-3xl font-bold text-gray-800 mb-4">Choose Your Path</h2>
-                    <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                        Select your account type to get started with the right tools and features for your business needs.
+            {/* CRITICAL: Choose Your Path - Moved to Top Priority Section */}
+            <section className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl p-10 mb-8 shadow-lg border border-indigo-200">
+                <div className="text-center mb-12">
+                    <h2 className="text-4xl font-bold text-gray-800 mb-4">🚀 Choose Your Path</h2>
+                    <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                        <strong>Start earning today!</strong> Join our ecosystem and unlock your potential. Whether you're a business owner, affiliate marketer, or customer - there's a perfect role for you.
                     </p>
                 </div>
 
-                <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
                     {/* Shop Owner Path */}
-                    <div className="bg-white rounded-xl p-6 shadow-lg border border-blue-200 hover:shadow-xl transition-all">
+                    <div className="bg-white rounded-xl p-6 shadow-xl border border-blue-200 hover:shadow-2xl transition-all transform hover:scale-105">
                         <div className="text-center">
                             <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
                                 <span className="text-2xl">🏪</span>
@@ -174,79 +174,104 @@ const HomePage: React.FC = () => {
                             <ul className="text-xs text-gray-500 space-y-1 mb-6 text-left">
                                 <li>✓ Create unlimited coupons</li>
                                 <li>✓ Track customer redemptions</li>
-                                <li>✓ Manage referral programs</li>
-                                <li>✓ Access detailed analytics</li>
+                                <li>✓ Full customer data visibility</li>
+                                <li>✓ Affiliate partnership tracking</li>
                             </ul>
                             <Link 
                                 to="/login?role=shop-owner"
                                 className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-blue-700 transition-colors inline-block text-center"
                             >
-                                Start as Shop Owner
+                                Start Your Business
                             </Link>
                         </div>
                     </div>
 
                     {/* Affiliate Path */}
-                    <div className="bg-white rounded-xl p-6 shadow-lg border border-green-200 hover:shadow-xl transition-all">
+                    <div className="bg-white rounded-xl p-6 shadow-xl border border-green-200 hover:shadow-2xl transition-all transform hover:scale-105">
                         <div className="text-center">
                             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <span className="text-2xl">📢</span>
+                                <span className="text-2xl">📈</span>
                             </div>
                             <h3 className="text-xl font-bold text-green-800 mb-3">Affiliate Marketer</h3>
                             <p className="text-sm text-gray-600 mb-4">
-                                Promote coupons and earn commissions. Build your marketing network and track performance.
+                                Promote business coupons and earn commissions on every successful redemption.
                             </p>
                             <ul className="text-xs text-gray-500 space-y-1 mb-6 text-left">
-                                <li>✓ Earn commission on promotions</li>
-                                <li>✓ Access marketing materials</li>
-                                <li>✓ Track conversion rates</li>
-                                <li>✓ Get referral bonuses</li>
+                                <li>✓ Earn commission per redemption</li>
+                                <li>✓ Access to all active coupons</li>
+                                <li>✓ Real-time performance tracking</li>
+                                <li>✓ Multiple promotion channels</li>
                             </ul>
                             <Link 
                                 to="/login?role=affiliate"
                                 className="w-full bg-green-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-green-700 transition-colors inline-block text-center"
                             >
-                                Start as Affiliate
+                                Start Earning
                             </Link>
                         </div>
                     </div>
 
                     {/* Customer Path */}
-                    <div className="bg-white rounded-xl p-6 shadow-lg border border-purple-200 hover:shadow-xl transition-all">
+                    <div className="bg-white rounded-xl p-6 shadow-xl border border-purple-200 hover:shadow-2xl transition-all transform hover:scale-105">
                         <div className="text-center">
                             <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <span className="text-2xl">🛍️</span>
+                                <span className="text-2xl">🎁</span>
                             </div>
                             <h3 className="text-xl font-bold text-purple-800 mb-3">Customer</h3>
                             <p className="text-sm text-gray-600 mb-4">
-                                Discover amazing deals and earn credits with every purchase. Build your reward balance.
+                                Discover amazing deals, redeem coupons, and earn reward points with every purchase.
                             </p>
                             <ul className="text-xs text-gray-500 space-y-1 mb-6 text-left">
-                                <li>✓ Access exclusive deals</li>
-                                <li>✓ Earn credits on redemptions</li>
-                                <li>✓ Build reward balance</li>
-                                <li>✓ Discover new businesses</li>
+                                <li>✓ Access exclusive discounts</li>
+                                <li>✓ Earn reward points</li>
+                                <li>✓ Easy coupon redemption</li>
+                                <li>✓ Discover local businesses</li>
                             </ul>
                             <Link 
-                                to="/login?role=user"
+                                to="/marketplace"
                                 className="w-full bg-purple-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-purple-700 transition-colors inline-block text-center"
                             >
-                                Start as Customer
+                                Explore Deals
+                            </Link>
+                        </div>
+                    </div>
+
+                    {/* Network Partner Path */}
+                    <div className="bg-white rounded-xl p-6 shadow-xl border border-orange-200 hover:shadow-2xl transition-all transform hover:scale-105">
+                        <div className="text-center">
+                            <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <span className="text-2xl">🤝</span>
+                            </div>
+                            <h3 className="text-xl font-bold text-orange-800 mb-3">Network Partner</h3>
+                            <p className="text-sm text-gray-600 mb-4">
+                                Refer new businesses and affiliates to earn substantial referral bonuses.
+                            </p>
+                            <ul className="text-xs text-gray-500 space-y-1 mb-6 text-left">
+                                <li>✓ 10,000 credits per referral</li>
+                                <li>✓ Lifetime earning potential</li>
+                                <li>✓ Build your network</li>
+                                <li>✓ Exclusive partner benefits</li>
+                            </ul>
+                            <Link 
+                                to="/partners"
+                                className="w-full bg-orange-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-orange-700 transition-colors inline-block text-center"
+                            >
+                                Join Network
                             </Link>
                         </div>
                     </div>
                 </div>
 
-                <div className="text-center mt-8">
-                    <p className="text-sm text-gray-500">
-                        Already have an account? 
+                <div className="text-center mt-12">
+                    <div className="inline-flex items-center gap-4 bg-white px-8 py-4 rounded-full shadow-lg border border-gray-200">
+                        <span className="text-sm font-medium text-gray-600">New to the platform?</span>
                         <Link 
-                            to="/login"
-                            className="text-blue-600 hover:text-blue-800 font-semibold ml-2"
+                            to="/login" 
+                            className="text-blue-600 hover:text-blue-700 font-bold text-sm bg-blue-50 px-4 py-2 rounded-full hover:bg-blue-100 transition-all"
                         >
-                            Sign In Here
+                            Get Started Free →
                         </Link>
-                    </p>
+                    </div>
                 </div>
             </section>
 

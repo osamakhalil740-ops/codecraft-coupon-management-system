@@ -190,6 +190,12 @@ const ShopOwnerDashboard: React.FC = () => {
     const [availableKeys, setAvailableKeys] = useState<CreditKey[]>([]);
     const [modalInfo, setModalInfo] = useState<{url: string} | null>(null);
     
+    // NEW: Complete visibility data
+    const [couponRedemptions, setCouponRedemptions] = useState<any[]>([]);
+    const [affiliateActivity, setAffiliateActivity] = useState<any[]>([]);
+    const [customerData, setCustomerData] = useState<any[]>([]);
+    const [activeTab, setActiveTab] = useState<'overview' | 'redemptions' | 'affiliates' | 'customers'>('overview');
+    
     // Credit request form
     const [showCreditRequestForm, setShowCreditRequestForm] = useState(false);
     const [requestAmount, setRequestAmount] = useState(1000);
@@ -204,15 +210,24 @@ const ShopOwnerDashboard: React.FC = () => {
 
     const fetchData = useCallback(async () => {
         if (user) {
-            const [shopCoupons, shopReferrals, shopCreditRequests, shopCreditKeys] = await Promise.all([
+            const [shopCoupons, shopReferrals, shopCreditRequests, shopCreditKeys, redemptions, affiliates, customers] = await Promise.all([
                 api.getCouponsForShop(user.id),
                 api.getReferralsForShop(user.id),
                 api.getCreditRequestsForShop(user.id),
-                api.getCreditKeysForShop(user.id)
+                api.getCreditKeysForShop(user.id),
+                // NEW: Get detailed redemption data for this shop's coupons
+                api.getRedemptionsForShop(user.id),
+                // NEW: Get all affiliates who promoted this shop's coupons
+                api.getAffiliatesForShop(user.id),
+                // NEW: Get all customer data from redemptions
+                api.getCustomerDataForShop(user.id)
             ]);
             setCoupons(shopCoupons);
             setReferrals(shopReferrals);
             setCreditRequests(shopCreditRequests);
+            setCouponRedemptions(redemptions);
+            setAffiliateActivity(affiliates);
+            setCustomerData(customers);
             // Filter to show only unused keys
             setAvailableKeys(shopCreditKeys.filter(key => !key.isUsed && new Date(key.expiresAt) > new Date()));
         }
@@ -420,55 +435,282 @@ const ShopOwnerDashboard: React.FC = () => {
                 </div>
             )}
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-                <div className="lg:col-span-2 space-y-8">
-                    <ReferralSection />
-                     <div className="animate-slideInUp" style={{animationDelay: '100ms'}}>
-                        <h2 className="text-2xl font-semibold text-dark-gray mb-4">{t('shopOwner.myCoupons')}</h2>
-                        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-                            {coupons.map(coupon => (
-                                <CouponCard key={coupon.id} coupon={coupon}>
-                                    <button onClick={() => handleShare(coupon.id)} className="w-full bg-primary text-white font-bold py-2 px-4 rounded-lg hover:opacity-90 transition-all shadow-md hover:shadow-lg transform hover:scale-105">
-                                        {t('shopOwner.shareCoupon')}
-                                    </button>
-                                </CouponCard>
-                            ))}
+            {/* Navigation Tabs */}
+            <div className="flex flex-wrap gap-3 mb-8">
+                {[
+                    { id: 'overview', label: '📊 Overview', icon: '📊' },
+                    { id: 'redemptions', label: '🎫 Redemptions', icon: '🎫' },
+                    { id: 'affiliates', label: '📈 Affiliates', icon: '📈' },
+                    { id: 'customers', label: '👥 Customers', icon: '👥' }
+                ].map((tab) => (
+                    <button
+                        key={tab.id}
+                        onClick={() => setActiveTab(tab.id as any)}
+                        className={`px-4 py-2 rounded-full text-sm font-semibold transition ${
+                            activeTab === tab.id 
+                                ? 'bg-primary text-white shadow-lg' 
+                                : 'bg-white text-gray-600 hover:bg-slate-100 border'
+                        }`}
+                    >
+                        {tab.label}
+                    </button>
+                ))}
+            </div>
+
+            {/* Tab Content */}
+            {activeTab === 'overview' && (
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+                    <div className="lg:col-span-2 space-y-8">
+                        <ReferralSection />
+                        <div className="animate-slideInUp" style={{animationDelay: '100ms'}}>
+                            <h2 className="text-2xl font-semibold text-dark-gray mb-4">{t('shopOwner.myCoupons')}</h2>
+                            <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                                {coupons.map(coupon => (
+                                    <CouponCard key={coupon.id} coupon={coupon}>
+                                        <button onClick={() => handleShare(coupon.id)} className="w-full bg-primary text-white font-bold py-2 px-4 rounded-lg hover:opacity-90 transition-all shadow-md hover:shadow-lg transform hover:scale-105">
+                                            {t('shopOwner.shareCoupon')}
+                                        </button>
+                                    </CouponCard>
+                                ))}
+                            </div>
+                            {coupons.length === 0 && <p className="text-center p-4 bg-white rounded-xl shadow-lg border text-gray-500">{t('user.noCoupons.title')}</p>}
                         </div>
-                         {coupons.length === 0 && <p className="text-center p-4 bg-white rounded-xl shadow-lg border text-gray-500">{t('user.noCoupons.title')}</p>}
+                    </div>
+                    <div className="space-y-8">
+                        <CreateCouponForm onCouponCreated={fetchData} />
+                        <div className="animate-slideInUp" style={{animationDelay: '200ms'}}>
+                            <h3 className="text-xl font-semibold text-dark-gray mb-4">{t('shopOwner.myReferrals')}</h3>
+                            <div className="bg-white rounded-xl shadow-lg border">
+                                <table className="w-full text-sm text-left">
+                                    <thead className="text-xs text-gray-700 uppercase bg-slate-100 rounded-t-lg">
+                                        <tr>
+                                            <th className="px-4 py-3">{t('shopOwner.referralsTable.shopName')}</th>
+                                            <th className="px-4 py-3">{t('shopOwner.referralsTable.status')}</th>
+                                            <th className="px-4 py-3">{t('shopOwner.referralsTable.signupDate')}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {referrals.map(ref => (
+                                            <tr key={ref.id} className="border-b hover:bg-slate-50 transition-colors">
+                                                <td className="px-4 py-3 font-medium">{ref.referredShopName}</td>
+                                                <td className="px-4 py-3">
+                                                    <span className={`px-2 py-1 text-xs font-semibold rounded-full ${ref.status === 'rewarded' ? 'bg-green-100 text-success' : 'bg-yellow-100 text-pending'}`}>
+                                                        {t(`referralStatus.${ref.status}`)}
+                                                    </span>
+                                                </td>
+                                                <td className="px-4 py-3">{new Date(ref.signupDate).toLocaleDateString()}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                                {referrals.length === 0 && <p className="text-center p-4 text-gray-500">{t('shopOwner.noReferrals')}</p>}
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div className="space-y-8">
-                    <CreateCouponForm onCouponCreated={fetchData} />
-                     <div className="animate-slideInUp" style={{animationDelay: '200ms'}}>
-                        <h3 className="text-xl font-semibold text-dark-gray mb-4">{t('shopOwner.myReferrals')}</h3>
-                        <div className="bg-white rounded-xl shadow-lg border">
-                            <table className="w-full text-sm text-left">
-                                <thead className="text-xs text-gray-700 uppercase bg-slate-100 rounded-t-lg">
+            )}
+
+            {/* REDEMPTIONS TAB - Complete visibility */}
+            {activeTab === 'redemptions' && (
+                <div className="space-y-6">
+                    <div className="bg-white rounded-xl shadow-lg border overflow-hidden">
+                        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 border-b">
+                            <h2 className="text-2xl font-bold text-gray-800 mb-2">🎫 All Coupon Redemptions</h2>
+                            <p className="text-gray-600">Complete visibility into every redemption of your coupons</p>
+                        </div>
+                        
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-sm">
+                                <thead className="bg-gray-50 text-xs text-gray-700 uppercase">
                                     <tr>
-                                        <th className="px-4 py-3">{t('shopOwner.referralsTable.shopName')}</th>
-                                        <th className="px-4 py-3">{t('shopOwner.referralsTable.status')}</th>
-                                        <th className="px-4 py-3">{t('shopOwner.referralsTable.signupDate')}</th>
+                                        <th className="px-6 py-3 text-left">Date & Time</th>
+                                        <th className="px-6 py-3 text-left">Coupon</th>
+                                        <th className="px-6 py-3 text-left">Customer Details</th>
+                                        <th className="px-6 py-3 text-left">Source</th>
+                                        <th className="px-6 py-3 text-left">Affiliate</th>
+                                        <th className="px-6 py-3 text-left">Commission Paid</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    {referrals.map(ref => (
-                                        <tr key={ref.id} className="border-b hover:bg-slate-50 transition-colors">
-                                            <td className="px-4 py-3 font-medium">{ref.referredShopName}</td>
-                                            <td className="px-4 py-3">
-                                                <span className={`px-2 py-1 text-xs font-semibold rounded-full ${ref.status === 'rewarded' ? 'bg-green-100 text-success' : 'bg-yellow-100 text-pending'}`}>
-                                                    {t(`referralStatus.${ref.status}`)}
+                                <tbody className="divide-y divide-gray-200">
+                                    {couponRedemptions.map((redemption) => (
+                                        <tr key={redemption.id} className="hover:bg-gray-50">
+                                            <td className="px-6 py-4">
+                                                <div className="text-sm text-gray-900">
+                                                    {redemption.redeemedAt?.toLocaleDateString()}
+                                                </div>
+                                                <div className="text-xs text-gray-500">
+                                                    {redemption.redeemedAt?.toLocaleTimeString()}
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <div className="text-sm font-medium text-gray-900">{redemption.couponTitle}</div>
+                                                <div className="text-xs text-gray-500">ID: {redemption.couponId?.slice(0, 8)}</div>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <div className="text-sm text-gray-900">{redemption.customerName || 'N/A'}</div>
+                                                <div className="text-xs text-gray-500">{redemption.customerPhone || 'N/A'}</div>
+                                                <div className="text-xs text-gray-500">{redemption.customerEmail || 'N/A'}</div>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                                                    redemption.affiliateId ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'
+                                                }`}>
+                                                    {redemption.affiliateId ? 'Affiliate → User' : 'Direct User'}
                                                 </span>
                                             </td>
-                                            <td className="px-4 py-3">{new Date(ref.signupDate).toLocaleDateString()}</td>
+                                            <td className="px-6 py-4">
+                                                {redemption.affiliateId ? (
+                                                    <div>
+                                                        <div className="text-sm font-medium text-gray-900">{redemption.affiliateName || 'Unknown'}</div>
+                                                        <div className="text-xs text-gray-500">ID: {redemption.affiliateId?.slice(0, 8)}</div>
+                                                    </div>
+                                                ) : (
+                                                    <span className="text-sm text-gray-500">N/A</span>
+                                                )}
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <div className="text-sm font-medium text-green-600">
+                                                    {redemption.commissionEarned ? `${redemption.commissionEarned} credits` : 'N/A'}
+                                                </div>
+                                            </td>
                                         </tr>
                                     ))}
                                 </tbody>
                             </table>
-                             {referrals.length === 0 && <p className="text-center p-4 text-gray-500">{t('shopOwner.noReferrals')}</p>}
+                            {couponRedemptions.length === 0 && (
+                                <div className="text-center py-8 text-gray-500">
+                                    No redemptions yet
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
-            </div>
+            )}
+
+            {/* AFFILIATES TAB - Who promoted your coupons */}
+            {activeTab === 'affiliates' && (
+                <div className="space-y-6">
+                    <div className="bg-white rounded-xl shadow-lg border overflow-hidden">
+                        <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-6 border-b">
+                            <h2 className="text-2xl font-bold text-gray-800 mb-2">📈 Affiliate Partners</h2>
+                            <p className="text-gray-600">All affiliates who promoted your coupons and their performance</p>
+                        </div>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+                            {affiliateActivity.map((affiliate) => (
+                                <div key={affiliate.affiliateId} className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-6 border">
+                                    <div className="flex items-center justify-between mb-4">
+                                        <h3 className="text-lg font-semibold text-gray-800">{affiliate.affiliateName}</h3>
+                                        <span className="text-xs text-gray-500">ID: {affiliate.affiliateId?.slice(0, 8)}</span>
+                                    </div>
+                                    
+                                    <div className="space-y-3">
+                                        <div className="flex justify-between">
+                                            <span className="text-sm text-gray-600">Total Redemptions</span>
+                                            <span className="text-sm font-semibold text-blue-600">{affiliate.totalRedemptions}</span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                            <span className="text-sm text-gray-600">Commission Earned</span>
+                                            <span className="text-sm font-semibold text-green-600">{affiliate.totalCommission} credits</span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                            <span className="text-sm text-gray-600">Latest Activity</span>
+                                            <span className="text-xs text-gray-500">
+                                                {affiliate.redemptions[0]?.redeemedAt?.toLocaleDateString() || 'N/A'}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="mt-4 pt-4 border-t border-gray-200">
+                                        <h4 className="text-sm font-medium text-gray-700 mb-2">Recent Redemptions</h4>
+                                        <div className="space-y-1 max-h-24 overflow-y-auto">
+                                            {affiliate.redemptions.slice(0, 3).map((redemption: any, idx: number) => (
+                                                <div key={idx} className="text-xs text-gray-600 flex justify-between">
+                                                    <span>{redemption.couponTitle?.slice(0, 20)}...</span>
+                                                    <span>{redemption.redeemedAt?.toLocaleDateString()}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        
+                        {affiliateActivity.length === 0 && (
+                            <div className="text-center py-8 text-gray-500">
+                                No affiliate partners yet
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
+
+            {/* CUSTOMERS TAB - Customer data from redemptions */}
+            {activeTab === 'customers' && (
+                <div className="space-y-6">
+                    <div className="bg-white rounded-xl shadow-lg border overflow-hidden">
+                        <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-6 border-b">
+                            <h2 className="text-2xl font-bold text-gray-800 mb-2">👥 Customer Database</h2>
+                            <p className="text-gray-600">Complete customer information from all coupon redemptions</p>
+                        </div>
+                        
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-sm">
+                                <thead className="bg-gray-50 text-xs text-gray-700 uppercase">
+                                    <tr>
+                                        <th className="px-6 py-3 text-left">Customer Info</th>
+                                        <th className="px-6 py-3 text-left">Contact Details</th>
+                                        <th className="px-6 py-3 text-left">Demographics</th>
+                                        <th className="px-6 py-3 text-left">Redemption History</th>
+                                        <th className="px-6 py-3 text-left">Source</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-gray-200">
+                                    {customerData.map((customer) => (
+                                        <tr key={customer.id} className="hover:bg-gray-50">
+                                            <td className="px-6 py-4">
+                                                <div className="text-sm font-medium text-gray-900">{customer.customerName || 'N/A'}</div>
+                                                <div className="text-xs text-gray-500">User ID: {customer.userId?.slice(0, 8)}</div>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <div className="text-sm text-gray-900">{customer.customerPhone || 'N/A'}</div>
+                                                <div className="text-xs text-gray-500">{customer.customerEmail || 'N/A'}</div>
+                                                <div className="text-xs text-gray-500">{customer.customerAddress || 'N/A'}</div>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <div className="text-sm text-gray-900">
+                                                    Age: {customer.customerAge || 'N/A'}
+                                                </div>
+                                                <div className="text-xs text-gray-500">
+                                                    Gender: {customer.customerGender || 'N/A'}
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <div className="text-sm text-gray-900">{customer.couponTitle}</div>
+                                                <div className="text-xs text-gray-500">
+                                                    {customer.redeemedAt?.toLocaleDateString()}
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                                                    customer.affiliateId ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'
+                                                }`}>
+                                                    {customer.affiliateId ? `Via ${customer.affiliateName || 'Affiliate'}` : 'Direct'}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                            {customerData.length === 0 && (
+                                <div className="text-center py-8 text-gray-500">
+                                    No customer data yet
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
             
             {/* Credit Request Modal */}
             {showCreditRequestForm && (

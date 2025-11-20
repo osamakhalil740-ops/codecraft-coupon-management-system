@@ -72,6 +72,94 @@ export const api = {
         return coupons.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
     },
 
+    // NEW: Get detailed redemption data for a shop
+    getRedemptionsForShop: async (shopId: string): Promise<any[]> => {
+        try {
+            const redemptionsCollection = collection(db, "redemptions");
+            const q = query(redemptionsCollection, where("shopOwnerId", "==", shopId), orderBy("redeemedAt", "desc"));
+            const snapshot = await getDocs(q);
+            return snapshot.docs.map(doc => ({ 
+                id: doc.id, 
+                ...doc.data(),
+                redeemedAt: doc.data().redeemedAt?.toDate?.() || new Date(doc.data().redeemedAt || Date.now())
+            }));
+        } catch (error) {
+            console.error('Error fetching shop redemptions:', error);
+            return [];
+        }
+    },
+
+    // NEW: Get all affiliates who promoted this shop's coupons
+    getAffiliatesForShop: async (shopId: string): Promise<any[]> => {
+        try {
+            const redemptionsCollection = collection(db, "redemptions");
+            const q = query(redemptionsCollection, where("shopOwnerId", "==", shopId));
+            const snapshot = await getDocs(q);
+            
+            // Get unique affiliate IDs and their performance data
+            const affiliateMap = new Map();
+            snapshot.docs.forEach(doc => {
+                const data = doc.data();
+                const affiliateId = data.affiliateId;
+                if (affiliateId) {
+                    if (!affiliateMap.has(affiliateId)) {
+                        affiliateMap.set(affiliateId, {
+                            affiliateId,
+                            affiliateName: data.affiliateName || 'Unknown',
+                            redemptions: [],
+                            totalCommission: 0,
+                            totalRedemptions: 0
+                        });
+                    }
+                    const affiliate = affiliateMap.get(affiliateId);
+                    affiliate.redemptions.push({
+                        ...data,
+                        redeemedAt: data.redeemedAt?.toDate?.() || new Date(data.redeemedAt || Date.now())
+                    });
+                    affiliate.totalCommission += data.commissionEarned || 0;
+                    affiliate.totalRedemptions += 1;
+                }
+            });
+            
+            return Array.from(affiliateMap.values());
+        } catch (error) {
+            console.error('Error fetching shop affiliates:', error);
+            return [];
+        }
+    },
+
+    // NEW: Get all customer data from redemptions for this shop
+    getCustomerDataForShop: async (shopId: string): Promise<any[]> => {
+        try {
+            // First get standard redemptions
+            const redemptionsCollection = collection(db, "redemptions");
+            const q1 = query(redemptionsCollection, where("shopOwnerId", "==", shopId), orderBy("redeemedAt", "desc"));
+            const snapshot1 = await getDocs(q1);
+            const standardRedemptions = snapshot1.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data(),
+                redeemedAt: doc.data().redeemedAt?.toDate?.() || new Date(doc.data().redeemedAt || Date.now())
+            }));
+
+            // Then get detailed customer redemptions
+            const detailedCollection = collection(db, "detailedCustomerRedemptions");
+            const q2 = query(detailedCollection, where("shopOwnerId", "==", shopId), orderBy("timestamp", "desc"));
+            const snapshot2 = await getDocs(q2);
+            const detailedRedemptions = snapshot2.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data(),
+                redeemedAt: doc.data().timestamp?.toDate?.() || new Date(doc.data().timestamp || Date.now())
+            }));
+
+            // Combine and deduplicate
+            const allCustomerData = [...standardRedemptions, ...detailedRedemptions];
+            return allCustomerData;
+        } catch (error) {
+            console.error('Error fetching customer data for shop:', error);
+            return [];
+        }
+    },
+
     getCouponById: async (id: string): Promise<Coupon | null> => {
         const docRef = doc(db, "coupons", id);
         const docSnap = await getDoc(docRef);

@@ -503,6 +503,91 @@ const AdminDashboard: React.FC = () => {
 
     const settingsContent = (
         <div className="space-y-6">
+            {/* NEW: Complete System Chain Analysis */}
+            <div className="bg-white rounded-2xl border border-slate-100 p-6">
+                <h3 className="text-lg font-semibold text-dark-gray mb-4">🔗 Complete Activity Chain Analysis</h3>
+                <p className="text-sm text-gray-500 mb-4">Full visibility: Shop Owner → Affiliate → User relationships and all system data</p>
+                
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    {/* Chain Analysis */}
+                    <div className="space-y-4">
+                        <h4 className="font-semibold text-gray-800">📊 Activity Chains</h4>
+                        {redemptions.slice(0, 10).map((redemption) => (
+                            <div key={redemption.id} className="bg-gray-50 p-4 rounded-lg border">
+                                <div className="flex items-center gap-2 mb-2">
+                                    <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                                        {new Date(redemption.redeemedAt).toLocaleDateString()}
+                                    </span>
+                                </div>
+                                <div className="space-y-2 text-sm">
+                                    <div className="flex items-center gap-2">
+                                        <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                                        <span className="font-medium">🏪 Shop:</span>
+                                        <span>{redemption.shopOwnerName || 'Unknown'}</span>
+                                    </div>
+                                    {redemption.affiliateId && (
+                                        <div className="flex items-center gap-2 ml-4">
+                                            <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
+                                            <span className="font-medium">📈 Affiliate:</span>
+                                            <span>{redemption.affiliateName || 'Unknown'}</span>
+                                        </div>
+                                    )}
+                                    <div className="flex items-center gap-2 ml-8">
+                                        <span className="w-2 h-2 bg-orange-500 rounded-full"></span>
+                                        <span className="font-medium">👤 Customer:</span>
+                                        <span>{redemption.customerName || 'Unknown'}</span>
+                                    </div>
+                                    <div className="ml-12 text-xs text-gray-600">
+                                        🎫 {redemption.couponTitle} • 💰 Commission: {redemption.commissionEarned || 0}
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Detailed System Stats */}
+                    <div className="space-y-4">
+                        <h4 className="font-semibold text-gray-800">📈 System Performance</h4>
+                        
+                        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg border border-blue-200">
+                            <h5 className="font-medium text-blue-800 mb-2">🏪 Shop Owners</h5>
+                            <div className="space-y-1 text-sm text-gray-700">
+                                <div>Total Active: {shopOwners.length}</div>
+                                <div>Avg Credits: {shopOwners.length > 0 ? Math.round(shopOwners.reduce((sum, s) => sum + s.credits, 0) / shopOwners.length).toLocaleString() : 0}</div>
+                                <div>Total Coupons Created: {allCoupons.length}</div>
+                            </div>
+                        </div>
+
+                        <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-lg border border-green-200">
+                            <h5 className="font-medium text-green-800 mb-2">📈 Affiliates</h5>
+                            <div className="space-y-1 text-sm text-gray-700">
+                                <div>Total Active: {affiliates.length}</div>
+                                <div>Total Commissions Paid: {redemptions.reduce((sum, r) => sum + (r.commissionEarned || 0), 0).toLocaleString()}</div>
+                                <div>Avg Performance: {affiliates.length > 0 ? (redemptions.filter(r => r.affiliateId).length / affiliates.length).toFixed(1) : 0} redemptions/affiliate</div>
+                            </div>
+                        </div>
+
+                        <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-4 rounded-lg border border-purple-200">
+                            <h5 className="font-medium text-purple-800 mb-2">👥 Customers</h5>
+                            <div className="space-y-1 text-sm text-gray-700">
+                                <div>Unique Customers: {new Set(redemptions.map(r => r.userId)).size}</div>
+                                <div>Total Redemptions: {redemptions.length}</div>
+                                <div>Avg Redemptions/Customer: {redemptions.length > 0 ? (redemptions.length / new Set(redemptions.map(r => r.userId)).size).toFixed(1) : 0}</div>
+                            </div>
+                        </div>
+
+                        <div className="bg-gradient-to-r from-orange-50 to-red-50 p-4 rounded-lg border border-orange-200">
+                            <h5 className="font-medium text-orange-800 mb-2">🔗 Network Effects</h5>
+                            <div className="space-y-1 text-sm text-gray-700">
+                                <div>Direct Redemptions: {redemptions.filter(r => !r.affiliateId).length}</div>
+                                <div>Affiliate-driven: {redemptions.filter(r => r.affiliateId).length}</div>
+                                <div>Network Efficiency: {redemptions.length > 0 ? ((redemptions.filter(r => r.affiliateId).length / redemptions.length) * 100).toFixed(1) : 0}%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             {/* System Activity Feed */}
             <div className="bg-white rounded-2xl border border-slate-100 p-6">
                 <h3 className="text-lg font-semibold text-dark-gray mb-4">🔍 Real-Time System Activity</h3>

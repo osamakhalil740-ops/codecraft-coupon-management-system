@@ -51,30 +51,7 @@ const PublicCouponPage: React.FC = () => {
         fetchAndTrackCoupon();
     }, [id, t]);
 
-    const handleActivateCoupon = async () => {
-        if (!id || !user) {
-            setActivationMessage('Please login to activate this coupon and earn reward points.');
-            return;
-        }
-
-        setIsActivating(true);
-        setActivationMessage('');
-        
-        try {
-            const result = await api.redeemCoupon(id, affiliateId, user.id);
-            setActivationMessage(result.message);
-            
-            if (result.success) {
-                // Refresh coupon data to show updated uses
-                const updatedCoupon = await api.getCouponById(id);
-                if (updatedCoupon) setCoupon(updatedCoupon);
-            }
-        } catch (error: any) {
-            setActivationMessage(error.message || 'Failed to activate coupon. Please try again.');
-        } finally {
-            setIsActivating(false);
-        }
-    };
+    // Removed handleActivateCoupon - All redemptions now go through validation portal with customer data
 
     if (loading) return <div className="text-center p-10">{t('common.loading')}</div>;
     if (error) return <div className="text-center p-10 text-alert">{error}</div>;
@@ -89,31 +66,37 @@ const PublicCouponPage: React.FC = () => {
                 <p className="text-center text-gray-600 mb-6">{t('publicCoupon.forTheCustomer.description')}</p>
                 <CouponCard coupon={coupon} showAffiliateCommission={!!affiliateId} />
                 
-                {/* Customer Activation Section */}
+                {/* Customer Redemption Section - REQUIRES VALIDATION */}
                 <div className="mt-6 bg-white p-6 rounded-xl shadow-lg border">
+                    <div className="text-center mb-4">
+                        <h3 className="text-xl font-semibold text-gray-800 mb-2">🎯 Redeem This Coupon</h3>
+                        <p className="text-gray-600 text-sm">
+                            All coupon redemptions require verification through the merchant for your security and to collect customer details.
+                        </p>
+                    </div>
+                    
                     {!user && (
                         <div className="text-center">
-                            <p className="text-gray-600 mb-4">Login to activate this coupon and earn reward points!</p>
+                            <p className="text-gray-600 mb-4">Login to redeem this coupon and earn reward points!</p>
                             <Link to="/login" className="w-full bg-primary text-white font-bold py-3 px-4 rounded-lg hover:opacity-90 transition-all shadow-md hover:shadow-lg transform hover:scale-105 inline-block text-center">
-                                Login to Activate
+                                Login to Redeem
                             </Link>
                         </div>
                     )}
                     
                     {user && coupon.customerRewardPoints > 0 && (
                         <div className="text-center p-3 bg-blue-50 rounded-lg border border-blue-200 mb-4">
-                            <p className="text-blue-800 font-semibold">🎁 You'll earn {coupon.customerRewardPoints} points for activating this coupon!</p>
+                            <p className="text-blue-800 font-semibold">🎁 You'll earn {coupon.customerRewardPoints} points for redeeming this coupon!</p>
                         </div>
                     )}
                     
                     {user && coupon.usesLeft > 0 && (
-                        <button 
-                            onClick={handleActivateCoupon}
-                            disabled={isActivating}
-                            className="w-full bg-success text-white font-bold py-4 px-6 rounded-lg hover:opacity-90 disabled:opacity-50 transition-all shadow-md hover:shadow-lg transform hover:scale-105 text-lg"
+                        <Link 
+                            to={`/validate/${coupon.id}${affiliateId ? `?affiliateId=${affiliateId}` : ''}`}
+                            className="w-full bg-success text-white font-bold py-4 px-6 rounded-lg hover:opacity-90 transition-all shadow-md hover:shadow-lg transform hover:scale-105 text-lg inline-block text-center"
                         >
-                            {isActivating ? 'Activating...' : `🎫 Activate Coupon (${coupon.usesLeft} left)`}
-                        </button>
+                            🎫 Redeem Coupon with Details ({coupon.usesLeft} left)
+                        </Link>
                     )}
                     
                     {user && coupon.usesLeft <= 0 && (
@@ -122,15 +105,11 @@ const PublicCouponPage: React.FC = () => {
                         </div>
                     )}
                     
-                    {activationMessage && (
-                        <div className={`mt-4 p-3 rounded-lg text-center font-semibold ${
-                            activationMessage.includes('success') || activationMessage.includes('successfully') 
-                                ? 'bg-green-100 text-green-800' 
-                                : 'bg-red-100 text-red-800'
-                        }`}>
-                            {activationMessage}
-                        </div>
-                    )}
+                    <div className="mt-4 p-3 bg-orange-50 rounded-lg border border-orange-200">
+                        <p className="text-orange-800 text-xs">
+                            🔒 <strong>Security Notice:</strong> All redemptions require customer verification through the merchant. This ensures security and helps businesses serve you better.
+                        </p>
+                    </div>
                 </div>
             </div>
              <div className="md:col-span-1 bg-white p-6 rounded-xl shadow-lg border animate-slideInUp">
