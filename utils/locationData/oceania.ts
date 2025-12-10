@@ -6,6 +6,20 @@
 import { RegionalData } from './index';
 
 export const oceaniaData: RegionalData = {
+  "Australia": {
+    cities: {
+      "Sydney": ["CBD", "Bondi", "Manly", "Surry Hills", "Paddington"],
+      "Melbourne": ["CBD", "St Kilda", "Fitzroy", "Carlton", "South Yarra"],
+      "Brisbane": ["CBD", "South Bank", "Fortitude Valley", "New Farm", "West End"],
+      "Perth": ["CBD", "Fremantle", "Subiaco", "Cottesloe", "Northbridge"],
+      "Adelaide": ["CBD", "North Adelaide", "Glenelg", "Port Adelaide", "Norwood"],
+      "Gold Coast": ["Surfers Paradise", "Broadbeach", "Burleigh Heads", "Coolangatta", "Southport"],
+      "Canberra": ["City Centre", "Belconnen", "Woden", "Tuggeranong", "Gungahlin"],
+      "Newcastle": ["CBD", "The Junction", "Merewether", "Hamilton", "Charlestown"],
+      "Wollongong": ["City Centre", "North Wollongong", "Fairy Meadow", "Wollongong East", "Coniston"],
+      "Hobart": ["CBD", "Battery Point", "Sandy Bay", "North Hobart", "West Hobart"]
+    }
+  },
   "Fiji": {
     cities: {
       "Suva": ["Centre", "Lami", "Nasinu", "Nausori", "Samabula"],

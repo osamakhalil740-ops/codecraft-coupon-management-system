@@ -6,6 +6,124 @@
 import { RegionalData } from './index';
 
 export const americasData: RegionalData = {
+  "United States": {
+    cities: {
+      "New York": ["Manhattan", "Brooklyn", "Queens", "The Bronx", "Staten Island"],
+      "Los Angeles": ["Hollywood", "Beverly Hills", "Santa Monica", "Downtown LA", "West Hollywood"],
+      "Chicago": ["Downtown", "North Side", "South Side", "West Side", "Lincoln Park"],
+      "Houston": ["Downtown", "Uptown", "Midtown", "River Oaks", "The Heights"],
+      "Phoenix": ["Downtown", "Scottsdale", "Tempe", "Mesa", "Glendale"],
+      "Philadelphia": ["Center City", "Old City", "South Philly", "University City", "Fishtown"],
+      "San Antonio": ["Downtown", "Alamo Heights", "Stone Oak", "Medical Center", "Riverwalk"],
+      "San Diego": ["Downtown", "La Jolla", "Pacific Beach", "Gaslamp", "Mission Valley"],
+      "Dallas": ["Downtown", "Uptown", "Deep Ellum", "Oak Lawn", "Bishop Arts"],
+      "San Jose": ["Downtown", "Willow Glen", "Almaden", "Evergreen", "North San Jose"],
+      "Austin": ["Downtown", "South Congress", "East Austin", "West Lake", "Hyde Park"],
+      "Jacksonville": ["Downtown", "Riverside", "San Marco", "Beaches", "Southside"],
+      "Fort Worth": ["Downtown", "Sundance Square", "West 7th", "Stockyards", "TCU"],
+      "Columbus": ["Downtown", "Short North", "German Village", "Arena District", "Clintonville"],
+      "Charlotte": ["Uptown", "South End", "NoDa", "Plaza Midwood", "Dilworth"],
+      "San Francisco": ["Downtown", "Mission", "Castro", "North Beach", "Haight-Ashbury"],
+      "Indianapolis": ["Downtown", "Broad Ripple", "Fountain Square", "Mass Ave", "Carmel"],
+      "Seattle": ["Downtown", "Capitol Hill", "Ballard", "Fremont", "Queen Anne"],
+      "Denver": ["Downtown", "LoDo", "Capitol Hill", "Highland", "Cherry Creek"],
+      "Washington DC": ["Downtown", "Georgetown", "Dupont Circle", "Adams Morgan", "Capitol Hill"],
+      "Boston": ["Downtown", "Back Bay", "North End", "South End", "Cambridge"],
+      "Nashville": ["Downtown", "Midtown", "East Nashville", "12 South", "Germantown"],
+      "Detroit": ["Downtown", "Midtown", "Corktown", "Eastern Market", "Campus Martius"],
+      "Oklahoma City": ["Downtown", "Bricktown", "Midtown", "Plaza District", "Paseo"],
+      "Portland": ["Downtown", "Pearl District", "Alberta", "Hawthorne", "Division"],
+      "Las Vegas": ["Strip", "Downtown", "Summerlin", "Henderson", "North Las Vegas"],
+      "Memphis": ["Downtown", "Midtown", "Cooper-Young", "Germantown", "East Memphis"],
+      "Louisville": ["Downtown", "Highlands", "Old Louisville", "Germantown", "NuLu"],
+      "Baltimore": ["Inner Harbor", "Fells Point", "Canton", "Federal Hill", "Mount Vernon"],
+      "Milwaukee": ["Downtown", "Third Ward", "Bay View", "East Side", "Walker's Point"],
+      "Albuquerque": ["Downtown", "Old Town", "Nob Hill", "Uptown", "Northeast Heights"],
+      "Tucson": ["Downtown", "University", "Midtown", "Foothills", "East Side"],
+      "Fresno": ["Downtown", "Tower District", "Old Fig Garden", "Woodward Park", "Northwest"],
+      "Sacramento": ["Downtown", "Midtown", "East Sacramento", "Land Park", "Natomas"],
+      "Mesa": ["Downtown", "East Mesa", "West Mesa", "Red Mountain", "Superstition Springs"],
+      "Kansas City": ["Downtown", "Country Club Plaza", "Westport", "Crossroads", "Power & Light"],
+      "Atlanta": ["Downtown", "Midtown", "Buckhead", "Virginia Highland", "Decatur"],
+      "Long Beach": ["Downtown", "Belmont Shore", "Naples", "Bixby Knolls", "East Village"],
+      "Colorado Springs": ["Downtown", "Old Colorado City", "Broadmoor", "Powers", "Briargate"],
+      "Raleigh": ["Downtown", "North Hills", "Glenwood South", "Five Points", "Cameron Village"],
+      "Miami": ["South Beach", "Downtown", "Brickell", "Coral Gables", "Wynwood"],
+      "Virginia Beach": ["Oceanfront", "Town Center", "Hilltop", "Great Neck", "Sandbridge"],
+      "Omaha": ["Downtown", "Old Market", "Midtown", "Blackstone", "Aksarben"],
+      "Oakland": ["Downtown", "Jack London Square", "Uptown", "Rockridge", "Lake Merritt"],
+      "Minneapolis": ["Downtown", "Uptown", "Northeast", "North Loop", "Loring Park"],
+      "Tulsa": ["Downtown", "Brookside", "Cherry Street", "Blue Dome", "Pearl District"],
+      "Arlington": ["Downtown", "Entertainment District", "Parks Mall", "Highlands", "Pantego"],
+      "New Orleans": ["French Quarter", "Garden District", "Warehouse District", "Uptown", "Marigny"]
+    }
+  },
+  "Canada": {
+    cities: {
+      "Toronto": ["Downtown", "North York", "Scarborough", "Etobicoke", "East York"],
+      "Montreal": ["Downtown", "Old Montreal", "Plateau", "Mile End", "Westmount"],
+      "Vancouver": ["Downtown", "West End", "Kitsilano", "Richmond", "Burnaby"],
+      "Calgary": ["Downtown", "Beltline", "Kensington", "Hillhurst", "Mission"],
+      "Edmonton": ["Downtown", "Whyte Avenue", "West Edmonton", "Oliver", "Strathcona"],
+      "Ottawa": ["ByWard Market", "Glebe", "Westboro", "Sandy Hill", "Centretown"],
+      "Winnipeg": ["Downtown", "Exchange District", "Osborne Village", "Corydon", "St. Boniface"],
+      "Quebec City": ["Old Quebec", "Saint-Roch", "Sainte-Foy", "Limoilou", "Charlesbourg"],
+      "Hamilton": ["Downtown", "Locke Street", "Westdale", "Ancaster", "Dundas"],
+      "Kitchener": ["Downtown", "Uptown Waterloo", "Belmont Village", "Victoria Park", "Sportsworld"],
+      "London": ["Downtown", "Old South", "Byron", "Wortley Village", "Masonville"],
+      "Victoria": ["Downtown", "James Bay", "Fairfield", "Oak Bay", "Fernwood"],
+      "Halifax": ["Downtown", "Spring Garden", "North End", "South End", "Dartmouth"],
+      "Oshawa": ["Downtown", "Lakeview", "Eastdale", "Harmony", "Taunton"],
+      "Windsor": ["Downtown", "Walkerville", "Sandwich Town", "South Windsor", "Riverside"],
+      "Saskatoon": ["Downtown", "Broadway", "Riversdale", "8th Street", "Preston Crossing"],
+      "Regina": ["Downtown", "Cathedral", "Wascana", "Harbour Landing", "Northgate"],
+      "St. John's": ["Downtown", "Quidi Vidi", "George Street", "Water Street", "Signal Hill"],
+      "Kelowna": ["Downtown", "Westbank", "Glenmore", "Mission", "Rutland"],
+      "Barrie": ["Downtown", "Holly", "Painswick", "Cundles", "South End"]
+    }
+  },
+  "Brazil": {
+    cities: {
+      "São Paulo": ["Vila Madalena", "Jardins", "Itaim Bibi", "Vila Olímpia", "Moema"],
+      "Rio de Janeiro": ["Copacabana", "Ipanema", "Leblon", "Botafogo", "Centro"],
+      "Brasília": ["Asa Sul", "Asa Norte", "Lago Sul", "Lago Norte", "Águas Claras"],
+      "Salvador": ["Pelourinho", "Barra", "Rio Vermelho", "Pituba", "Ondina"],
+      "Fortaleza": ["Meireles", "Aldeota", "Centro", "Praia de Iracema", "Cocó"],
+      "Belo Horizonte": ["Savassi", "Pampulha", "Lourdes", "Funcionários", "Centro"],
+      "Manaus": ["Centro", "Adrianópolis", "Ponta Negra", "Vieiralves", "Aleixo"],
+      "Curitiba": ["Centro", "Batel", "Água Verde", "Bigorrilho", "Santa Felicidade"],
+      "Recife": ["Boa Viagem", "Centro", "Pina", "Olinda", "Casa Forte"],
+      "Porto Alegre": ["Centro", "Moinhos de Vento", "Bela Vista", "Cidade Baixa", "Petrópolis"]
+    }
+  },
+  "Mexico": {
+    cities: {
+      "Mexico City": ["Polanco", "Roma Norte", "Condesa", "Coyoacán", "Santa Fe"],
+      "Guadalajara": ["Zona Rosa", "Chapultepec", "Centro Histórico", "Providencia", "Tlaquepaque"],
+      "Monterrey": ["San Pedro", "Centro", "Santa Catarina", "San Nicolás", "Apodaca"],
+      "Puebla": ["Centro Histórico", "Angelópolis", "Cholula", "La Paz", "Zavaleta"],
+      "Tijuana": ["Zona Centro", "Zona Río", "Playas", "Mesa de Otay", "La Mesa"],
+      "León": ["Centro", "Campestre", "Delta", "Los Gavilanes", "Villalobos"],
+      "Juárez": ["Centro", "Campestre", "Las Torres", "Sendero", "El Chamizal"],
+      "Zapopan": ["Centro", "Andares", "Puerta de Hierro", "Chapalita", "Tesistán"],
+      "Cancún": ["Hotel Zone", "Downtown", "Puerto Juárez", "Isla Mujeres", "Playa del Carmen"],
+      "Mérida": ["Centro", "Paseo de Montejo", "García Ginerés", "Altabrisa", "Norte"]
+    }
+  },
+  "Argentina": {
+    cities: {
+      "Buenos Aires": ["Palermo", "Recoleta", "San Telmo", "Puerto Madero", "Belgrano"],
+      "Córdoba": ["Nueva Córdoba", "Centro", "Güemes", "Cerro de las Rosas", "Alberdi"],
+      "Rosario": ["Centro", "Echesortu", "Pichincha", "Fisherton", "Zona Norte"],
+      "Mendoza": ["Ciudad", "Godoy Cruz", "Las Heras", "Guaymallén", "Maipú"],
+      "La Plata": ["Centro", "City Bell", "Villa Elisa", "Gonnet", "Tolosa"],
+      "Tucumán": ["Centro", "Yerba Buena", "Tafí Viejo", "Las Talitas", "Banda del Río Salí"],
+      "Mar del Plata": ["Centro", "La Perla", "Güemes", "Los Troncos", "Playa Grande"],
+      "Salta": ["Centro", "Tres Cerritos", "San Lorenzo", "Cerrillos", "Grand Bourg"],
+      "Santa Fe": ["Centro", "Guadalupe", "Candioti", "Sur", "Alto Verde"],
+      "San Juan": ["Centro", "Rivadavia", "Chimbas", "Santa Lucía", "Rawson"]
+    }
+  },
   "Antigua and Barbuda": {
     cities: {
       "St. John's": ["Centre", "Redcliffe Quay", "Heritage Quay", "Newgate Street", "Long Street"],

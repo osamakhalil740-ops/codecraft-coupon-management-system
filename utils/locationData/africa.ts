@@ -6,6 +6,81 @@
 import { RegionalData } from './index';
 
 export const africaData: RegionalData = {
+  "Egypt": {
+    cities: {
+      "Cairo": ["Downtown", "Zamalek", "Maadi", "Heliopolis", "New Cairo"],
+      "Alexandria": ["Downtown", "Montaza", "Sidi Gaber", "Smouha", "Miami"],
+      "Giza": ["Dokki", "Mohandessin", "6th of October", "Sheikh Zayed", "Haram"],
+      "Luxor": ["East Bank", "West Bank", "Karnak", "Valley of Kings", "Downtown"],
+      "Aswan": ["Downtown", "Elephantine Island", "West Bank", "Nubian Village", "High Dam"],
+      "Port Said": ["El Manakh", "El Arab", "El Zohour", "El Sharq", "El Dawahy"],
+      "Suez": ["Suez City", "Attaka", "Faisal", "Arbaeen", "Ganayen"],
+      "Ismailia": ["Downtown", "Sheikh Zayed", "El Talateen", "El Forsan", "El Hay El Sharqy"],
+      "Tanta": ["Downtown", "El Galaa", "El Mahatta", "El Modereya", "El Qantara"],
+      "Mansoura": ["Downtown", "Gehan", "Turil", "Sandoub", "Mit Ghamr"],
+      "Zagazig": ["Downtown", "El Hariry", "El Montazah", "El Qawmeya", "El Zohour"],
+      "Damanhur": ["Downtown", "Kom El Deka", "El Mahatta", "El Guish", "El Manshya"],
+      "Asyut": ["Downtown", "El Wali", "Abnub", "El Qosia", "Manfalut"],
+      "Faiyum": ["Downtown", "Tamiya", "Itsa", "Sinnuris", "Ibshaway"],
+      "Damietta": ["Downtown", "New Damietta", "Kafr Saad", "Faraskur", "El Zarqa"],
+      "Minya": ["Downtown", "Malawi", "Abu Qurqas", "Maghagha", "Bani Mazar"],
+      "Hurghada": ["El Dahar", "Sekalla", "El Mamsha", "El Gouna", "Makadi Bay"],
+      "Sharm El Sheikh": ["Naama Bay", "Sharks Bay", "Hadaba", "Old Market", "Nabq Bay"],
+      "Kafr El Sheikh": ["Downtown", "Desouk", "Baltim", "Fuwwah", "Metoubes"],
+      "Beni Suef": ["Downtown", "El Wasta", "Nasser", "Bush", "Sumasta"],
+      "Qena": ["Downtown", "Nag Hammadi", "Abu Tesht", "Qus", "Naqada"],
+      "Sohag": ["Downtown", "Akhmim", "Girga", "El Balyana", "Dar El Salam"],
+      "Beheira": ["Damanhur", "Kafr El Dawar", "Rashid", "Kom Hamada", "Edku"],
+      "Marsa Matruh": ["Downtown", "Alamein", "Sidi Abdel Rahman", "Baghoush", "Sidi Barrani"],
+      "El Mahalla El Kubra": ["Downtown", "Kafr El Zayat", "Samannoud", "Talkha", "Mit Salsil"],
+      "10th of Ramadan": ["Industrial Zone", "Residential", "El Amal", "El Borg", "El Salam"],
+      "6th of October": ["Sheikh Zayed", "Hadayek October", "El Hosary", "Dream Land", "Mall of Arabia"],
+      "New Cairo": ["5th Settlement", "1st Settlement", "Katameya", "Madinaty", "Rehab"],
+      "Nasr City": ["Downtown", "7th District", "10th District", "Abbasia", "Alf Maskan"],
+      "Ain Shams": ["Ain Shams", "Gesr El Suez", "El Salam", "El Marg", "Ezbet El Nakhl"],
+      "Helwan": ["Downtown", "Maadi El Sarayat", "15th of May", "Kafr El Elw", "Attaba"],
+      "Shoubra El Kheima": ["Downtown", "Khosous", "Qalyub", "Benha", "Toukh"],
+      "Qalyubia": ["Benha", "Shubra", "Qalyub", "Khanka", "Shibin El Qanater"],
+      "Sharqia": ["Zagazig", "10th of Ramadan", "Bilbeis", "Faqous", "Mashtul El Souk"],
+      "Gharbia": ["Tanta", "El Mahalla", "Kafr El Zayat", "Samannoud", "Zefta"],
+      "Monufia": ["Shebin El Kom", "Menouf", "Ashmoun", "Quesna", "Berket El Saba"],
+      "Dakahlia": ["Mansoura", "Mit Ghamr", "Talkha", "Dekernes", "Aga"],
+      "Kafr El Dawwar": ["Downtown", "Industrial Zone", "El Bostan", "Kafr El Dawar", "Abu Hommos"],
+      "Red Sea": ["Hurghada", "Safaga", "Marsa Alam", "Qusair", "Ras Gharib"],
+      "New Valley": ["Kharga", "Dakhla", "Farafra", "Baris", "Balat"],
+      "Siwa": ["Siwa Oasis", "Shali", "Aghurmi", "Dakrour", "Bir Wahed"],
+      "Arish": ["Downtown", "Sheikh Zuweid", "Rafah", "Bir El Abd", "El Hasana"],
+      "North Sinai": ["Arish", "Sheikh Zuweid", "Rafah", "Bir El Abd", "Nakhl"],
+      "South Sinai": ["Sharm El Sheikh", "Dahab", "Nuweiba", "Taba", "Saint Catherine"]
+    }
+  },
+  "South Africa": {
+    cities: {
+      "Johannesburg": ["Sandton", "Rosebank", "Midrand", "Randburg", "Soweto"],
+      "Cape Town": ["City Centre", "Sea Point", "Camps Bay", "Waterfront", "Constantia"],
+      "Durban": ["City Centre", "Umhlanga", "Berea", "Morningside", "Westville"],
+      "Pretoria": ["City Centre", "Hatfield", "Centurion", "Menlyn", "Brooklyn"],
+      "Port Elizabeth": ["Central", "Summerstrand", "Walmer", "Newton Park", "Humewood"]
+    }
+  },
+  "Nigeria": {
+    cities: {
+      "Lagos": ["Victoria Island", "Ikoyi", "Lekki", "Ikeja", "Yaba"],
+      "Abuja": ["Central Area", "Garki", "Wuse", "Maitama", "Asokoro"],
+      "Kano": ["Sabon Gari", "Fagge", "Nassarawa", "Gwale", "Dala"],
+      "Ibadan": ["Dugbe", "Bodija", "Ring Road", "Mokola", "Agodi"],
+      "Port Harcourt": ["Old GRA", "New GRA", "Trans Amadi", "Eliozu", "Rumuokoro"]
+    }
+  },
+  "Kenya": {
+    cities: {
+      "Nairobi": ["CBD", "Westlands", "Karen", "Kilimani", "Upper Hill"],
+      "Mombasa": ["Old Town", "Nyali", "Bamburi", "Likoni", "Changamwe"],
+      "Kisumu": ["CBD", "Milimani", "Mamboleo", "Kondele", "Nyalenda"],
+      "Nakuru": ["CBD", "Section 58", "Milimani", "Lanet", "Pipeline"],
+      "Eldoret": ["CBD", "West Indies", "Langas", "Pioneer", "Kapsoya"]
+    }
+  },
   "Algeria": {
     cities: {
       "Algiers": ["Bab El Oued", "Casbah", "Hydra", "El Biar", "Kouba"],

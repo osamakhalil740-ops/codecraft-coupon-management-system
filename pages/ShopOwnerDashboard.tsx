@@ -225,10 +225,12 @@ const ShopOwnerDashboard: React.FC = () => {
     const { user, refreshUser } = useAuth();
     const { t } = useTranslation();
     
-    // Real-time tracking integration for shop owner
+    // CRITICAL FIX: Disable real-time tracking for shop owners to prevent Firestore errors
+    // Shop owners don't need real-time tracking - it causes "FIRESTORE INTERNAL ASSERTION FAILED"
     const { trackingData, trackUserAction } = useRealTimeTracking(
         user?.roles || [], 
-        user?.id
+        user?.id,
+        false // Disable real-time listeners for shop owners
     );
     const [coupons, setCoupons] = useState<Coupon[]>([]);
     const [referrals, setReferrals] = useState<Referral[]>([]);

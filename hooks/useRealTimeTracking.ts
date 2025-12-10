@@ -39,9 +39,14 @@ const INITIAL_STATE: RealTimeTrackingData = {
 };
 
 // Export hook function with proper declaration to prevent hoisting issues
-export const useRealTimeTracking = function useRealTimeTrackingImpl(userRole: string[] = [], userId?: string) {
+export const useRealTimeTracking = function useRealTimeTrackingImpl(
+    userRole: string[] = [], 
+    userId?: string,
+    enableRealTime: boolean = true // NEW: Allow disabling real-time tracking
+) {
     // Explicitly declare all variables before using them
     const unsubscribeRefs = useRef<(() => void)[]>([]);
+    const isCleaningUp = useRef(false);
     
     // Initialize state with explicit typing and immutable objects
     const [trackingState, setTrackingState] = useState<RealTimeTrackingData>(() => ({
@@ -162,9 +167,22 @@ export const useRealTimeTracking = function useRealTimeTrackingImpl(userRole: st
 
     // Set up listeners function
     const setupListeners = useCallback(() => {
+        // CRITICAL FIX: Don't set up listeners if disabled or already cleaning up
+        if (!enableRealTime || isCleaningUp.current) {
+            console.log('⚠️ Real-time tracking disabled or cleaning up, skipping listener setup');
+            setTrackingState(prev => processDataSafely({
+                ...prev,
+                loading: false
+            }));
+            return [];
+        }
+        
         const unsubscribes: (() => void)[] = [];
         
         try {
+            console.log('🔴 Setting up real-time listeners for roles:', userRole);
+            
+            // CRITICAL FIX: Add error handlers to each listener
             // Redemptions listener
             const redemptionsQuery = query(
                 collection(db, 'redemptions'),
@@ -172,19 +190,28 @@ export const useRealTimeTracking = function useRealTimeTrackingImpl(userRole: st
                 limit(100)
             );
             
-            const unsubRedemptions = onSnapshot(redemptionsQuery, (snapshot) => {
-                const redemptions = snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data(),
-                    redeemedAt: doc.data().redeemedAt?.toDate() || new Date()
-                }));
-                
-                setTrackingState(prev => processDataSafely({
-                    ...prev,
-                    redemptions,
-                    lastUpdate: new Date()
-                }));
-            });
+            const unsubRedemptions = onSnapshot(
+                redemptionsQuery, 
+                (snapshot) => {
+                    if (isCleaningUp.current) return;
+                    
+                    const redemptions = snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data(),
+                        redeemedAt: doc.data().redeemedAt?.toDate() || new Date()
+                    }));
+                    
+                    setTrackingState(prev => processDataSafely({
+                        ...prev,
+                        redemptions,
+                        lastUpdate: new Date()
+                    }));
+                },
+                (error) => {
+                    console.error('❌ Redemptions listener error:', error);
+                    // Don't crash the app, just log the error
+                }
+            );
             unsubscribes.push(unsubRedemptions);
 
             // Admin activity listener  
@@ -194,19 +221,27 @@ export const useRealTimeTracking = function useRealTimeTrackingImpl(userRole: st
                 limit(200)
             );
             
-            const unsubAdminActivity = onSnapshot(adminActivityQuery, (snapshot) => {
-                const activities = snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data(),
-                    timestamp: doc.data().timestamp?.toDate() || new Date()
-                }));
-                
-                setTrackingState(prev => processDataSafely({
-                    ...prev,
-                    systemActivity: activities,
-                    lastUpdate: new Date()
-                }));
-            });
+            const unsubAdminActivity = onSnapshot(
+                adminActivityQuery, 
+                (snapshot) => {
+                    if (isCleaningUp.current) return;
+                    
+                    const activities = snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data(),
+                        timestamp: doc.data().timestamp?.toDate() || new Date()
+                    }));
+                    
+                    setTrackingState(prev => processDataSafely({
+                        ...prev,
+                        systemActivity: activities,
+                        lastUpdate: new Date()
+                    }));
+                },
+                (error) => {
+                    console.error('❌ Admin activity listener error:', error);
+                }
+            );
             unsubscribes.push(unsubAdminActivity);
 
             // User actions listener
@@ -216,19 +251,27 @@ export const useRealTimeTracking = function useRealTimeTrackingImpl(userRole: st
                 limit(500)
             );
             
-            const unsubUserActions = onSnapshot(userActionQuery, (snapshot) => {
-                const userActions = snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data(),
-                    timestamp: doc.data().timestamp?.toDate() || new Date()
-                }));
-                
-                setTrackingState(prev => processDataSafely({
-                    ...prev,
-                    userActions,
-                    lastUpdate: new Date()
-                }));
-            });
+            const unsubUserActions = onSnapshot(
+                userActionQuery, 
+                (snapshot) => {
+                    if (isCleaningUp.current) return;
+                    
+                    const userActions = snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data(),
+                        timestamp: doc.data().timestamp?.toDate() || new Date()
+                    }));
+                    
+                    setTrackingState(prev => processDataSafely({
+                        ...prev,
+                        userActions,
+                        lastUpdate: new Date()
+                    }));
+                },
+                (error) => {
+                    console.error('❌ User actions listener error:', error);
+                }
+            );
             unsubscribes.push(unsubUserActions);
 
             // Customer data listener (role-based)
@@ -250,19 +293,27 @@ export const useRealTimeTracking = function useRealTimeTrackingImpl(userRole: st
                     );
                 }
                 
-                const unsubCustomerData = onSnapshot(customerQuery, (snapshot) => {
-                    const customerData = snapshot.docs.map(doc => ({
-                        id: doc.id,
-                        ...doc.data(),
-                        timestamp: doc.data().timestamp?.toDate() || new Date()
-                    }));
-                    
-                    setTrackingState(prev => processDataSafely({
-                        ...prev,
-                        customerData,
-                        lastUpdate: new Date()
-                    }));
-                });
+                const unsubCustomerData = onSnapshot(
+                    customerQuery, 
+                    (snapshot) => {
+                        if (isCleaningUp.current) return;
+                        
+                        const customerData = snapshot.docs.map(doc => ({
+                            id: doc.id,
+                            ...doc.data(),
+                            timestamp: doc.data().timestamp?.toDate() || new Date()
+                        }));
+                        
+                        setTrackingState(prev => processDataSafely({
+                            ...prev,
+                            customerData,
+                            lastUpdate: new Date()
+                        }));
+                    },
+                    (error) => {
+                        console.error('❌ Customer data listener error:', error);
+                    }
+                );
                 unsubscribes.push(unsubCustomerData);
             }
 
@@ -282,13 +333,19 @@ export const useRealTimeTracking = function useRealTimeTrackingImpl(userRole: st
 
         unsubscribeRefs.current = unsubscribes;
         return unsubscribes;
-    }, [userRole, userId, processDataSafely]);
+    }, [userRole, userId, processDataSafely, enableRealTime]);
 
     // Initialize listeners on mount
     useEffect(() => {
+        // CRITICAL FIX: Cleanup flag management
+        isCleaningUp.current = false;
+        
         const unsubscribes = setupListeners();
         
         return () => {
+            console.log('🔴 Cleaning up real-time listeners...');
+            isCleaningUp.current = true;
+            
             unsubscribes.forEach(unsubscribe => {
                 try {
                     unsubscribe();

@@ -6,6 +6,135 @@
 import { RegionalData } from './index';
 
 export const europeData: RegionalData = {
+  "United Kingdom": {
+    cities: {
+      "London": ["Central London", "East London", "West London", "North London", "South London"],
+      "Manchester": ["City Centre", "Northern Quarter", "Didsbury", "Chorlton", "Salford"],
+      "Birmingham": ["City Centre", "Jewellery Quarter", "Moseley", "Edgbaston", "Digbeth"],
+      "Edinburgh": ["Old Town", "New Town", "Leith", "Stockbridge", "Morningside"],
+      "Liverpool": ["City Centre", "Albert Dock", "Cavern Quarter", "Georgian Quarter", "Ropewalks"],
+      "Glasgow": ["City Centre", "West End", "Merchant City", "Finnieston", "Southside"],
+      "Leeds": ["City Centre", "Headingley", "Chapel Allerton", "Roundhay", "Horsforth"],
+      "Bristol": ["City Centre", "Clifton", "Harbourside", "Stokes Croft", "Southville"],
+      "Sheffield": ["City Centre", "Ecclesall", "Kelham Island", "Broomhill", "Crookes"],
+      "Newcastle": ["City Centre", "Quayside", "Jesmond", "Ouseburn", "Gosforth"]
+    }
+  },
+  "Germany": {
+    cities: {
+      "Berlin": ["Mitte", "Kreuzberg", "Prenzlauer Berg", "Charlottenburg", "Friedrichshain"],
+      "Munich": ["Altstadt", "Maxvorstadt", "Schwabing", "Glockenbachviertel", "Haidhausen"],
+      "Hamburg": ["Altstadt", "St. Pauli", "Eppendorf", "Winterhude", "HafenCity"],
+      "Frankfurt": ["Altstadt", "Sachsenhausen", "Westend", "Nordend", "Bornheim"],
+      "Cologne": ["Altstadt", "Ehrenfeld", "Belgisches Viertel", "Südstadt", "Deutz"],
+      "Stuttgart": ["Mitte", "West", "Bad Cannstatt", "Degerloch", "Vaihingen"],
+      "Düsseldorf": ["Altstadt", "Carlstadt", "Pempelfort", "Bilk", "Oberkassel"],
+      "Dortmund": ["City", "Kreuzviertel", "Hörde", "Hombruch", "Brackel"],
+      "Essen": ["City", "Rüttenscheid", "Werden", "Kettwig", "Bredeney"],
+      "Leipzig": ["Zentrum", "Plagwitz", "Connewitz", "Gohlis", "Südvorstadt"]
+    }
+  },
+  "France": {
+    cities: {
+      "Paris": ["1st Arrondissement", "Marais", "Saint-Germain", "Montmartre", "Latin Quarter"],
+      "Marseille": ["Vieux-Port", "Le Panier", "Cours Julien", "Notre-Dame du Mont", "Castellane"],
+      "Lyon": ["Presqu'île", "Vieux Lyon", "Croix-Rousse", "Part-Dieu", "Confluence"],
+      "Toulouse": ["Centre", "Capitole", "Carmes", "Saint-Cyprien", "Compans-Caffarelli"],
+      "Nice": ["Vieux Nice", "Promenade des Anglais", "Cimiez", "Liberation", "Port"],
+      "Nantes": ["Centre", "Bouffay", "Île de Nantes", "Erdre", "Doulon"],
+      "Strasbourg": ["Grande Île", "Petite France", "Krutenau", "Neudorf", "Robertsau"],
+      "Montpellier": ["Centre", "Antigone", "Beaux-Arts", "Port Marianne", "Hôpitaux-Facultés"],
+      "Bordeaux": ["Centre", "Saint-Pierre", "Chartrons", "Bastide", "Mériadeck"],
+      "Lille": ["Centre", "Vieux Lille", "Wazemmes", "Vauban", "Fives"]
+    }
+  },
+  "Italy": {
+    cities: {
+      "Rome": ["Centro Storico", "Trastevere", "Vatican", "Testaccio", "Monti"],
+      "Milan": ["Centro", "Brera", "Navigli", "Porta Nuova", "Isola"],
+      "Naples": ["Centro Storico", "Vomero", "Chiaia", "Posillipo", "Quartieri Spagnoli"],
+      "Turin": ["Centro", "San Salvario", "Quadrilatero", "Crocetta", "Borgo Po"],
+      "Palermo": ["Centro", "Vucciria", "Kalsa", "Mondello", "Politeama"],
+      "Genoa": ["Centro Storico", "Boccadasse", "Albaro", "Carignano", "Castelletto"],
+      "Bologna": ["Centro", "Santo Stefano", "Saragozza", "Savena", "Porto"],
+      "Florence": ["Centro Storico", "Oltrarno", "Santa Croce", "San Lorenzo", "Santo Spirito"],
+      "Venice": ["San Marco", "Castello", "Cannaregio", "Dorsoduro", "San Polo"],
+      "Verona": ["Centro", "Veronetta", "Borgo Trento", "San Zeno", "Borgo Roma"]
+    }
+  },
+  "Spain": {
+    cities: {
+      "Madrid": ["Centro", "Salamanca", "Chamberí", "Retiro", "Malasaña"],
+      "Barcelona": ["Eixample", "Ciutat Vella", "Gràcia", "Sants", "Les Corts"],
+      "Valencia": ["Ciutat Vella", "Eixample", "Extramurs", "Campanar", "Algirós"],
+      "Seville": ["Centro", "Triana", "Macarena", "Nervión", "Los Remedios"],
+      "Zaragoza": ["Centro", "Delicias", "Actur", "Universidad", "Las Fuentes"],
+      "Málaga": ["Centro", "Pedregalejo", "El Palo", "Teatinos", "Carretera de Cádiz"],
+      "Murcia": ["Centro", "El Carmen", "Santa Eulalia", "Espinardo", "La Alberca"],
+      "Palma": ["Centre", "Santa Catalina", "Portixol", "Son Espanyolet", "La Calatrava"],
+      "Las Palmas": ["Vegueta", "Triana", "Las Canteras", "Playa del Inglés", "Maspalomas"],
+      "Bilbao": ["Casco Viejo", "Ensanche", "Deusto", "Indautxu", "Abando"]
+    }
+  },
+  "Netherlands": {
+    cities: {
+      "Amsterdam": ["Centrum", "Jordaan", "De Pijp", "Oud-Zuid", "Noord"],
+      "Rotterdam": ["Centrum", "Kralingen", "Delfshaven", "Noord", "Charlois"],
+      "The Hague": ["Centrum", "Scheveningen", "Bezuidenhout", "Statenkwartier", "Loosduinen"],
+      "Utrecht": ["Centrum", "Lombok", "Wittevrouwen", "Oudwijk", "Zuilen"],
+      "Eindhoven": ["Centrum", "Strijp", "Woensel", "Gestel", "Stratum"],
+      "Tilburg": ["Centrum", "West", "Noord", "Zuid", "Oost"],
+      "Groningen": ["Centrum", "Oosterpoort", "Paddepoel", "Corpus den Hoorn", "Vinkhuizen"],
+      "Almere": ["Centrum", "Haven", "Buiten", "Poort", "Stad"],
+      "Breda": ["Centrum", "Haagse Beemden", "Ginneken", "Princenhage", "Bavel"],
+      "Nijmegen": ["Centrum", "Bottendaal", "Dukenburg", "Lindenholt", "Oost"]
+    }
+  },
+  "Switzerland": {
+    cities: {
+      "Zurich": ["Altstadt", "Seefeld", "Wiedikon", "Aussersihl", "Oerlikon"],
+      "Geneva": ["Centre", "Plainpalais", "Eaux-Vives", "Pâquis", "Carouge"],
+      "Basel": ["Grossbasel", "Kleinbasel", "Gundeldingen", "St. Johann", "Riehen"],
+      "Bern": ["Altstadt", "Länggasse", "Breitenrain", "Kirchenfeld", "Bümpliz"],
+      "Lausanne": ["Centre", "Flon", "Ouchy", "Montbenon", "Chailly"]
+    }
+  },
+  "Sweden": {
+    cities: {
+      "Stockholm": ["Gamla Stan", "Södermalm", "Östermalm", "Norrmalm", "Vasastan"],
+      "Gothenburg": ["Centrum", "Haga", "Majorna", "Linnéstaden", "Järntorget"],
+      "Malmö": ["Centrum", "Möllevången", "Västra Hamnen", "Limhamn", "Rosengård"],
+      "Uppsala": ["Centrum", "Kungsängen", "Svartbäcken", "Luthagen", "Flogsta"],
+      "Lund": ["Centrum", "Klostergården", "Vildanden", "Nova", "Linero"]
+    }
+  },
+  "Norway": {
+    cities: {
+      "Oslo": ["Sentrum", "Grünerløkka", "Majorstuen", "Frogner", "St. Hanshaugen"],
+      "Bergen": ["Sentrum", "Bryggen", "Nordnes", "Sandviken", "Åsane"],
+      "Trondheim": ["Sentrum", "Bakklandet", "Lade", "Lerkendal", "Byåsen"],
+      "Stavanger": ["Sentrum", "Storhaug", "Eiganes", "Madla", "Tasta"],
+      "Tromsø": ["Sentrum", "Tromsdalen", "Langnes", "Kvaløya", "Tromsøysund"]
+    }
+  },
+  "Denmark": {
+    cities: {
+      "Copenhagen": ["Indre By", "Vesterbro", "Nørrebro", "Østerbro", "Christianshavn"],
+      "Aarhus": ["Centrum", "Vesterbro", "Nørrebro", "Trøjborg", "Åbyhøj"],
+      "Odense": ["Centrum", "Vollsmose", "Bolbro", "Tarup", "Korup"],
+      "Aalborg": ["Centrum", "Nørresundby", "Vestby", "Øst", "Hasseris"],
+      "Esbjerg": ["Centrum", "Jerne", "Sædding", "Esbjerg N", "Esbjerg Ø"]
+    }
+  },
+  "Finland": {
+    cities: {
+      "Helsinki": ["Keskusta", "Kallio", "Kamppi", "Punavuori", "Kruununhaka"],
+      "Espoo": ["Keskus", "Tapiola", "Leppävaara", "Matinkylä", "Espoonlahti"],
+      "Tampere": ["Keskusta", "Kaleva", "Hervanta", "Pispala", "Lielahti"],
+      "Vantaa": ["Keskus", "Myyrmäki", "Tikkurila", "Koivukylä", "Hakunila"],
+      "Oulu": ["Keskusta", "Tuira", "Kaukovainio", "Oulunsalo", "Haukipudas"]
+    }
+  },
   "Albania": {
     cities: {
       "Tirana": ["Centre", "Blloku", "New Bazaar", "Kombinat", "Kashar"],

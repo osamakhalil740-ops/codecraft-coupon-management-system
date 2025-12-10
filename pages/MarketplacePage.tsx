@@ -17,7 +17,7 @@ import {
     BuildingStorefrontIcon,
     SparklesIcon
 } from '@heroicons/react/24/outline';
-import { getAllCountries, getCitiesForCountryAsync } from '../utils/countryData';
+import { getAllCountries, getCitiesForCountry } from '../services/locationService';
 import AdvancedSearch, { SearchFilters } from '../components/AdvancedSearch';
 import LoadingSkeleton from '../components/LoadingSkeleton';
 import EmptyState from '../components/EmptyState';
@@ -42,13 +42,19 @@ const MarketplacePage: React.FC = () => {
     const [searchFilters, setSearchFilters] = useState<SearchFilters>({});
     
     // All available locations from system
-    const [allSystemCountries] = useState<string[]>(getAllCountries());
-    const [allSystemCities, setAllSystemCities] = useState<string[]>([]);
+    const [allSystemCountries, setAllSystemCountries] = useState<Array<{code: string, name: string}>>([]);
+    const [allSystemCities, setAllSystemCities] = useState<Array<{id: string | number, name: string}>>([]);
 
     useEffect(() => {
-        const fetchShops = async () => {
+        const initializeData = async () => {
             try {
                 setLoading(true);
+                
+                // Load countries from global location service
+                const countries = await getAllCountries();
+                setAllSystemCountries(countries);
+                
+                // Fetch shops
                 const allShops = await api.getAllShops();
                 // Only show shops that are publicly visible and have shop-owner role
                 const publicShops = allShops.filter(shop => 
@@ -65,34 +71,28 @@ const MarketplacePage: React.FC = () => {
             }
         };
 
-        fetchShops();
+        initializeData();
     }, []);
 
     // Load cities when country filter changes
     useEffect(() => {
         const loadCities = async () => {
             if (countryFilter) {
-                // Load cities for selected country
-                const cities = await getCitiesForCountryAsync(countryFilter);
+                // Load ALL cities for selected country from GeoNames
+                const cities = await getCitiesForCountry(countryFilter);
                 setAllSystemCities(cities);
                 // Reset city filter if it's not valid for the new country
-                if (cityFilter && !cities.includes(cityFilter)) {
+                const cityNames = cities.map(c => c.name);
+                if (cityFilter && !cityNames.includes(cityFilter)) {
                     setCityFilter('');
                 }
             } else {
-                // Load all cities from all countries when no country is selected
-                const allCities: string[] = [];
-                for (const country of allSystemCountries) {
-                    const cities = await getCitiesForCountryAsync(country);
-                    allCities.push(...cities);
-                }
-                // Remove duplicates and sort
-                setAllSystemCities([...new Set(allCities)].sort());
+                setAllSystemCities([]);
             }
         };
         
         loadCities();
-    }, [countryFilter, allSystemCountries, cityFilter]);
+    }, [countryFilter, cityFilter]);
 
     useEffect(() => {
         let filtered = shops;
@@ -422,7 +422,7 @@ const MarketplacePage: React.FC = () => {
                             >
                                 <option value="">All Countries</option>
                                 {allSystemCountries.map(country => (
-                                    <option key={country} value={country}>{country}</option>
+                                    <option key={country.code} value={country.code}>{country.name}</option>
                                 ))}
                             </select>
                         </div>
@@ -440,7 +440,7 @@ const MarketplacePage: React.FC = () => {
                                     {allSystemCities.length === 0 ? 'Loading cities...' : 'All Cities'}
                                 </option>
                                 {allSystemCities.map(city => (
-                                    <option key={city} value={city}>{city}</option>
+                                    <option key={city.id} value={city.name}>{city.name}</option>
                                 ))}
                             </select>
                         </div>

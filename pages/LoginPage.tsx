@@ -6,7 +6,7 @@ import { Role } from '../types';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import { LogoIcon } from '../components/icons/LogoIcon';
 import { useTranslation } from '../hooks/useTranslation';
-import { getAllCountries, getCitiesForCountryAsync, getDistrictsForCity } from '../utils/countryData';
+import GlobalLocationSelector from '../components/GlobalLocationSelector';
 
 const LoginPage: React.FC = () => {
   const { t } = useTranslation();
@@ -18,14 +18,12 @@ const LoginPage: React.FC = () => {
   // Shop Owner fields
   const [shopName, setShopName] = useState('');
   const [category, setCategory] = useState('');
-  const [country, setCountry] = useState('');
-  const [city, setCity] = useState('');
-  const [district, setDistrict] = useState('');
-  
-  // Dynamic location data
-  const [availableCountries] = useState(getAllCountries());
-  const [availableCities, setAvailableCities] = useState<string[]>([]);
-  const [availableDistricts, setAvailableDistricts] = useState<string[]>([]);
+  const [locationData, setLocationData] = useState({
+    country: '',
+    countryCode: '',
+    city: '',
+    district: '',
+  });
 
   // Common fields
   const [email, setEmail] = useState('');
@@ -57,30 +55,6 @@ const LoginPage: React.FC = () => {
     }
   }, [location]);
 
-  // Handle country change
-  useEffect(() => {
-    if (country) {
-      const loadCities = async () => {
-        const cities = await getCitiesForCountryAsync(country);
-        setAvailableCities(cities);
-        setCity('');
-        setDistrict('');
-        setAvailableDistricts([]);
-      };
-      loadCities();
-    } else {
-      setAvailableCities([]);
-    }
-  }, [country]);
-
-  // Handle city change
-  useEffect(() => {
-    if (country && city) {
-      const districts = getDistrictsForCity(country, city);
-      setAvailableDistricts(districts);
-      setDistrict('');
-    }
-  }, [country, city]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -92,7 +66,12 @@ const LoginPage: React.FC = () => {
         await login(email, password);
       } else {
         const finalName = role === 'shop-owner' ? shopName : name;
-        const shopDetails = role === 'shop-owner' ? { category, country, city, district } : undefined;
+        const shopDetails = role === 'shop-owner' ? { 
+          category, 
+          country: locationData.country,
+          city: locationData.city,
+          district: locationData.district,
+        } : undefined;
         await signup(email, password, finalName, role, referredBy, shopDetails);
         localStorage.removeItem('referralId');
       }
@@ -121,39 +100,14 @@ const LoginPage: React.FC = () => {
             <label htmlFor="category" className="block text-sm font-medium text-gray-700">{t('loginPage.categoryLabel')}</label>
             <input type="text" id="category" value={category} onChange={(e) => setCategory(e.target.value)} required className="mt-1 block w-full form-input" />
           </div>
-           <div>
-             <label htmlFor="country" className="block text-sm font-medium text-gray-700">{t('loginPage.countryLabel')}</label>
-             <select id="country" value={country} onChange={(e) => setCountry(e.target.value)} required className="mt-1 block w-full form-select">
-               <option value="">Select a country</option>
-               {availableCountries.map((countryOption) => (
-                 <option key={countryOption} value={countryOption}>{countryOption}</option>
-               ))}
-             </select>
-           </div>
-           
-           {country && (
-             <div>
-               <label htmlFor="city" className="block text-sm font-medium text-gray-700">{t('loginPage.cityLabel')}</label>
-               <select id="city" value={city} onChange={(e) => setCity(e.target.value)} required className="mt-1 block w-full form-select">
-                 <option value="">Select a city</option>
-                 {availableCities.map((cityOption) => (
-                   <option key={cityOption} value={cityOption}>{cityOption}</option>
-                 ))}
-               </select>
-             </div>
-           )}
-           
-           {city && availableDistricts.length > 0 && (
-             <div>
-               <label htmlFor="district" className="block text-sm font-medium text-gray-700">District/Area</label>
-               <select id="district" value={district} onChange={(e) => setDistrict(e.target.value)} className="mt-1 block w-full form-select">
-                 <option value="">Select a district (optional)</option>
-                 {availableDistricts.map((districtOption) => (
-                   <option key={districtOption} value={districtOption}>{districtOption}</option>
-                 ))}
-               </select>
-             </div>
-           )}
+          
+          {/* Global Location Selector - Complete World Coverage */}
+          <GlobalLocationSelector
+            value={locationData}
+            onChange={setLocationData}
+            required={true}
+            showDistrict={true}
+          />
         </>
       );
     }

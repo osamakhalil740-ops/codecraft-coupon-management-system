@@ -6,6 +6,137 @@
 import { RegionalData } from './index';
 
 export const asiaData: RegionalData = {
+  "Japan": {
+    cities: {
+      "Tokyo": ["Shibuya", "Shinjuku", "Ginza", "Harajuku", "Akihabara", "Roppongi", "Asakusa"],
+      "Osaka": ["Dotonbori", "Namba", "Umeda", "Tennoji", "Shinsekai", "Sumiyoshi"],
+      "Kyoto": ["Gion", "Arashiyama", "Fushimi", "Higashiyama", "Kiyomizu", "Pontocho"],
+      "Yokohama": ["Minato Mirai", "Chinatown", "Kohoku", "Kanazawa", "Tsurumi"],
+      "Nagoya": ["Sakae", "Nagoya Station", "Osu", "Kanayama", "Chikusa"],
+      "Sapporo": ["Susukino", "Odori", "Maruyama", "Sapporo Station", "Nakajima Park"],
+      "Fukuoka": ["Tenjin", "Hakata", "Nakasu", "Daimyo", "Ohori"],
+      "Kobe": ["Sannomiya", "Harborland", "Motomachi", "Kitano", "Rokko"],
+      "Hiroshima": ["Hondori", "Peace Park", "Hiroshima Station", "Miyajima", "Eba"],
+      "Sendai": ["Ichibancho", "Kokubuncho", "Sendai Station", "Aoba-ku", "Wakabayashi"]
+    }
+  },
+  "China": {
+    cities: {
+      "Beijing": ["Dongcheng", "Xicheng", "Chaoyang", "Fengtai", "Haidian"],
+      "Shanghai": ["Huangpu", "Pudong", "Xuhui", "Changning", "Jing'an"],
+      "Guangzhou": ["Tianhe", "Yuexiu", "Liwan", "Haizhu", "Baiyun"],
+      "Shenzhen": ["Futian", "Luohu", "Nanshan", "Yantian", "Baoan"],
+      "Chengdu": ["Jinjiang", "Qingyang", "Jinniu", "Wuhou", "Chenghua"],
+      "Hangzhou": ["Xihu", "Shangcheng", "Gongshu", "Xiaoshan", "Binjiang"],
+      "Chongqing": ["Yuzhong", "Jiangbei", "Shapingba", "Nan'an", "Yubei"],
+      "Wuhan": ["Wuchang", "Hankou", "Hanyang", "Hongshan", "Qiaokou"],
+      "Xi'an": ["Beilin", "Lianhu", "Xincheng", "Yanta", "Baqiao"],
+      "Nanjing": ["Xuanwu", "Qinhuai", "Jianye", "Gulou", "Pukou"]
+    }
+  },
+  "India": {
+    cities: {
+      "Mumbai": ["South Mumbai", "Bandra", "Andheri", "Powai", "Thane"],
+      "Delhi": ["Connaught Place", "Khan Market", "Karol Bagh", "Lajpat Nagar", "Greater Kailash"],
+      "Bangalore": ["MG Road", "Koramangala", "Indiranagar", "Whitefield", "Electronic City"],
+      "Hyderabad": ["Banjara Hills", "Jubilee Hills", "Gachibowli", "Hitech City", "Secunderabad"],
+      "Ahmedabad": ["Navrangpura", "Satellite", "Vastrapur", "Maninagar", "Paldi"],
+      "Chennai": ["T. Nagar", "Anna Nagar", "Adyar", "Velachery", "OMR"],
+      "Kolkata": ["Park Street", "Salt Lake", "Ballygunge", "Alipore", "Howrah"],
+      "Pune": ["Koregaon Park", "Hinjewadi", "Viman Nagar", "Kothrud", "Wakad"],
+      "Jaipur": ["Pink City", "C-Scheme", "Vaishali Nagar", "Malviya Nagar", "Jagatpura"],
+      "Lucknow": ["Hazratganj", "Gomti Nagar", "Aliganj", "Indira Nagar", "Alambagh"]
+    }
+  },
+  "UAE": {
+    cities: {
+      "Dubai": ["Downtown", "Marina", "JBR", "Business Bay", "Jumeirah"],
+      "Abu Dhabi": ["Downtown", "Corniche", "Yas Island", "Al Reem Island", "Saadiyat"],
+      "Sharjah": ["City Centre", "Al Majaz", "Al Qasba", "University City", "Industrial Area"],
+      "Ajman": ["City Centre", "Al Nuaimiya", "Al Rashidiya", "Industrial Area", "Corniche"],
+      "Fujairah": ["City Centre", "Corniche", "Dibba", "Kalba", "Khor Fakkan"],
+      "Ras Al Khaimah": ["Old Town", "Al Nakheel", "Al Hamra", "Mina Al Arab", "Al Marjan"],
+      "Umm Al Quwain": ["Centre", "Old Town", "Falaj Al Mualla", "Al Ramlah", "Al Salam"]
+    }
+  },
+  "Saudi Arabia": {
+    cities: {
+      "Riyadh": ["Olaya", "Malaz", "Diplomatic Quarter", "King Fahd District", "Al Nakheel"],
+      "Jeddah": ["Al-Balad", "Corniche", "Al Hamra", "Al Rawdah", "Al Salamah"],
+      "Mecca": ["Haram", "Ajyad", "Kudai", "Al Shubayqah", "Jabal Omar"],
+      "Medina": ["Haram", "Quba", "Al Anbariyyah", "As Salam", "Al Haram"],
+      "Dammam": ["Al Faisaliyah", "Al Badiyah", "Al Shati", "Al Manar", "Uhud"],
+      "Khobar": ["Corniche", "Al Hamra", "Al Rakah", "Al Aqrabiyah", "Thuqbah"],
+      "Taif": ["Centre", "Shubra", "Al Hawiya", "Al Khalidiyah", "Al Naseem"],
+      "Tabuk": ["Centre", "King Fahd", "Al Muruj", "Zahrat", "Al Faisaliyah"],
+      "Buraidah": ["Centre", "Al Mughrizat", "Al Iskan", "Az Zahra", "Al Wusayta"],
+      "Khamis Mushait": ["Centre", "Al Muthallath", "King Fahd", "Umm Sabaa", "Al Khaldiyyah"]
+    }
+  },
+  "South Korea": {
+    cities: {
+      "Seoul": ["Gangnam", "Itaewon", "Hongdae", "Myeongdong", "Insadong"],
+      "Busan": ["Haeundae", "Seomyeon", "Gwangalli", "Nampo-dong", "Centum City"],
+      "Incheon": ["Songdo", "Bupyeong", "Sinpo", "Yeonsu", "Namdong"],
+      "Daegu": ["Dongseong-ro", "Suseong", "Duryu", "Dalseo", "Buk-gu"],
+      "Daejeon": ["Dunsan", "Yuseong", "Eunhaeng", "Jung-gu", "Daedeok"]
+    }
+  },
+  "Singapore": {
+    cities: {
+      "Singapore": ["Marina Bay", "Orchard Road", "Chinatown", "Little India", "Sentosa"]
+    }
+  },
+  "Hong Kong": {
+    cities: {
+      "Hong Kong": ["Central", "Causeway Bay", "Tsim Sha Tsui", "Mong Kok", "Wan Chai"]
+    }
+  },
+  "Thailand": {
+    cities: {
+      "Bangkok": ["Sukhumvit", "Silom", "Siam", "Sathorn", "Ratchada"],
+      "Chiang Mai": ["Old City", "Nimmanhaemin", "Night Bazaar", "Riverside", "San Sai"],
+      "Phuket": ["Patong", "Kata", "Karon", "Phuket Town", "Rawai"],
+      "Pattaya": ["Central Pattaya", "North Pattaya", "South Pattaya", "Jomtien", "Naklua"],
+      "Krabi": ["Ao Nang", "Railay", "Krabi Town", "Klong Muang", "Tub Kaek"]
+    }
+  },
+  "Malaysia": {
+    cities: {
+      "Kuala Lumpur": ["KLCC", "Bukit Bintang", "Bangsar", "Mont Kiara", "Chow Kit"],
+      "George Town": ["Georgetown", "Batu Ferringhi", "Tanjung Bungah", "Jelutong", "Bayan Lepas"],
+      "Johor Bahru": ["City Centre", "Skudai", "Nusajaya", "Taman Johor Jaya", "Pasir Gudang"],
+      "Ipoh": ["Old Town", "New Town", "Bercham", "Tambun", "Menglembu"],
+      "Malacca": ["Jonker Street", "Portuguese Settlement", "Bandar Hilir", "Ayer Keroh", "Bukit Beruang"]
+    }
+  },
+  "Indonesia": {
+    cities: {
+      "Jakarta": ["Central Jakarta", "South Jakarta", "West Jakarta", "North Jakarta", "East Jakarta"],
+      "Surabaya": ["Pusat Kota", "Tunjungan", "Gubeng", "Darmo", "Rungkut"],
+      "Bandung": ["Dago", "Cihampelas", "Braga", "Setia Budi", "Pasteur"],
+      "Medan": ["Medan Petisah", "Medan Baru", "Medan Polonia", "Medan Area", "Medan Helvetia"],
+      "Bali": ["Denpasar", "Kuta", "Seminyak", "Ubud", "Sanur"]
+    }
+  },
+  "Philippines": {
+    cities: {
+      "Manila": ["Ermita", "Malate", "Intramuros", "Binondo", "Sta. Cruz"],
+      "Quezon City": ["Diliman", "Cubao", "Eastwood", "Tandang Sora", "Commonwealth"],
+      "Makati": ["Poblacion", "Salcedo", "Legaspi", "Urdaneta", "Bel-Air"],
+      "Cebu": ["Cebu City", "Mandaue", "Lapu-Lapu", "Talisay", "Toledo"],
+      "Davao": ["Poblacion", "Buhangin", "Toril", "Matina", "Agdao"]
+    }
+  },
+  "Vietnam": {
+    cities: {
+      "Ho Chi Minh City": ["District 1", "District 3", "Phu Nhuan", "Binh Thanh", "District 7"],
+      "Hanoi": ["Hoan Kiem", "Ba Dinh", "Dong Da", "Hai Ba Trung", "Tay Ho"],
+      "Da Nang": ["Hai Chau", "Thanh Khe", "Son Tra", "Ngu Hanh Son", "Cam Le"],
+      "Nha Trang": ["Loc Tho", "Phuoc Hai", "Phuoc Hoa", "Vinh Hai", "Vinh Hoa"],
+      "Hoi An": ["Old Town", "An Hoi", "Cam Chau", "Cam Nam", "Tan An"]
+    }
+  },
   "Afghanistan": {
     cities: {
       "Kabul": ["Shahr-e Naw", "Wazir Akbar Khan", "Karte Parwan", "Khair Khana", "Pul-e-Charkhi"],
