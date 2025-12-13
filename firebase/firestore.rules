@@ -17,8 +17,14 @@ service cloud.firestore {
     
     function isSuperAdmin() {
       return isAuthenticated() && 
-             exists(/databases/$(database)/documents/shops/$(request.auth.uid)) &&
-             get(/databases/$(database)/documents/shops/$(request.auth.uid)).data.roles.hasAny(['super-admin']);
+             exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() && 
+             exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
     }
     
     function isShopOwner() {
@@ -33,13 +39,21 @@ service cloud.firestore {
              get(/databases/$(database)/documents/shops/$(request.auth.uid)).data.roles.hasAny(['affiliate']);
     }
     
+    // Users collection - user profiles
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && request.auth.uid == userId;
+      allow update: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
+      allow delete: if isAdmin();
+    }
+    
     // Shops collection - user profiles
     match /shops/{shopId} {
       allow read: if isAuthenticated();
       allow create: if isAuthenticated() && request.auth.uid == shopId;
       // Allow authenticated users to update (needed for redemption: credit transfers)
       allow update: if isAuthenticated();
-      allow delete: if isSuperAdmin();
+      allow delete: if isAdmin() || isSuperAdmin();
     }
     
     // Coupons collection - public read, authenticated write
@@ -55,7 +69,7 @@ service cloud.firestore {
       // Shop owners can fully update, customers can only update usesLeft during redemption
       allow update: if isAuthenticated();
       allow delete: if isAuthenticated() && 
-                       (resource.data.shopOwnerId == request.auth.uid || isSuperAdmin());
+                       (resource.data.shopOwnerId == request.auth.uid || isAdmin() || isSuperAdmin());
     }
     
     // Redemptions collection
@@ -63,8 +77,8 @@ service cloud.firestore {
     match /redemptions/{redemptionId} {
       allow read: if isAuthenticated();
       allow create: if isAuthenticated();
-      allow update: if isAuthenticated() || isSuperAdmin();
-      allow delete: if isSuperAdmin();
+      allow update: if isAuthenticated() || isAdmin() || isSuperAdmin();
+      allow delete: if isAdmin() || isSuperAdmin();
     }
     
     // Referrals collection - FULLY PERMISSIVE FOR REDEMPTION
