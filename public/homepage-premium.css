@@ -597,6 +597,45 @@ html {
   .homepage-metric-value {
     font-size: 2.5rem;
   }
+  
+  /* Disable expensive animations on mobile for better LCP/FCP */
+  .homepage-hero::before,
+  .homepage-hero::after,
+  .homepage-hero-content::before,
+  .homepage-hero-content::after {
+    animation: none !important;
+    opacity: 0.2;
+  }
+  
+  /* Simplify mobile animations */
+  .homepage-hero-title,
+  .homepage-hero-subtitle,
+  .homepage-hero-badge,
+  .homepage-hero-buttons,
+  .homepage-metric,
+  .homepage-benefit-card,
+  .homepage-step,
+  .homepage-coverage-stat {
+    animation: none !important;
+  }
+  
+  /* Remove hover transforms on mobile (touch devices) */
+  .homepage-path-card:hover,
+  .homepage-benefit-card:hover,
+  .homepage-coverage-stat:hover {
+    transform: none !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+  }
+  
+  /* Optimize GPU usage */
+  .homepage-hero,
+  .homepage-path-card,
+  .homepage-benefit-card,
+  .homepage-coverage-stat {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    will-change: auto;
+  }
 }
 
 /* Accessibility */

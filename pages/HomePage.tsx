@@ -1,10 +1,10 @@
 
-import React from 'react';
+import React, { memo, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from '../hooks/useTranslation';
 import { SparklesIcon, ShareIcon, RocketLaunchIcon, MapPinIcon, GlobeAltIcon } from '@heroicons/react/24/outline';
 
-const CouponGenerator: React.FC = () => {
+const CouponGenerator: React.FC = memo(() => {
     const { t } = useTranslation();
     return (
         <div className="glass-panel max-w-xl mt-10 w-full animate-slideInUp">
@@ -23,18 +23,20 @@ const CouponGenerator: React.FC = () => {
             </div>
         </div>
     );
-};
+});
+
+CouponGenerator.displayName = 'CouponGenerator';
 
 const HomePage: React.FC = () => {
     const { t } = useTranslation();
 
-    const metrics = [
+    const metrics = useMemo(() => [
         { label: t('home.metrics.shops'), value: '3,200+' },
         { label: t('home.metrics.coupons'), value: '12,500+' },
         { label: t('home.metrics.redemptions'), value: '57,800+' },
-    ];
+    ], [t]);
 
-    const benefits = [
+    const benefits = useMemo(() => [
         {
             icon: <SparklesIcon className="h-6 w-6" />,
             title: t('home.benefits.items.0.title'),
@@ -50,9 +52,9 @@ const HomePage: React.FC = () => {
             title: t('home.benefits.items.2.title'),
             description: t('home.benefits.items.2.description'),
         },
-    ];
+    ], [t]);
 
-    const steps = [
+    const steps = useMemo(() => [
         {
             title: t('home.howItWorks.step1.title'),
             description: t('home.howItWorks.step1.description'),
@@ -65,7 +67,7 @@ const HomePage: React.FC = () => {
             title: t('home.howItWorks.step3.title'),
             description: t('home.howItWorks.step3.description'),
         },
-    ];
+    ], [t]);
 
     return (
         <div className="space-y-16 animate-fadeIn">

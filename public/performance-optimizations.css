@@ -526,6 +526,22 @@ html {
   }
 }
 
+/* Disable animations on initial load for better LCP */
+.no-animations * {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* GPU acceleration for common animations */
+.animate-fade,
+.animate-slide,
+.card:hover,
+.btn:hover {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
 /* ========================================
    6. OFFLINE SUPPORT STYLES
    ======================================== */

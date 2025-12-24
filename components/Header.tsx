@@ -11,15 +11,15 @@ const Header: React.FC = () => {
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const handleLogout = () => {
+  const handleLogout = React.useCallback(() => {
     logout();
     navigate('/');
     setIsMobileMenuOpen(false);
-  };
+  }, [logout, navigate]);
 
-  const closeMobileMenu = () => {
+  const closeMobileMenu = React.useCallback(() => {
     setIsMobileMenuOpen(false);
-  };
+  }, []);
 
   return (
     <header className="bg-white/90 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-50">
@@ -53,12 +53,16 @@ const Header: React.FC = () => {
               <button
                 onClick={() => setLanguage('en')}
                 className={'px-2 py-1 text-xs sm:text-sm rounded transition-colors ' + (language === 'en' ? 'bg-blue-100 text-blue-700 font-medium' : 'text-gray-600 hover:text-gray-900')}
+                aria-label="Switch to English"
+                aria-pressed={language === 'en'}
               >
                 EN
               </button>
               <button
                 onClick={() => setLanguage('ar')}
                 className={'px-2 py-1 text-xs sm:text-sm rounded transition-colors ' + (language === 'ar' ? 'bg-blue-100 text-blue-700 font-medium' : 'text-gray-600 hover:text-gray-900')}
+                aria-label="Switch to Arabic"
+                aria-pressed={language === 'ar'}
               >
                 ع
               </button>
@@ -100,6 +104,7 @@ const Header: React.FC = () => {
               <button
                 onClick={handleLogout}
                 className="px-3 py-1.5 text-sm font-medium text-white bg-primary rounded-lg shadow-sm hover:shadow-lg hover:opacity-90 transition-all transform hover:scale-105 whitespace-nowrap"
+                aria-label="Logout from account"
               >
                 {t('header.logout')}
               </button>
@@ -130,11 +135,13 @@ const Header: React.FC = () => {
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+              aria-label={isMobileMenuOpen ? "Close mobile menu" : "Open mobile menu"}
+              aria-expanded={isMobileMenuOpen}
             >
               {isMobileMenuOpen ? (
-                <XMarkIcon className="block h-5 w-5" />
+                <XMarkIcon className="block h-5 w-5" aria-hidden="true" />
               ) : (
-                <Bars3Icon className="block h-5 w-5" />
+                <Bars3Icon className="block h-5 w-5" aria-hidden="true" />
               )}
             </button>
           </div>
@@ -172,6 +179,8 @@ const Header: React.FC = () => {
                         closeMobileMenu();
                       }}
                       className={'px-3 py-1 text-sm rounded transition-colors ' + (language === 'en' ? 'bg-blue-100 text-blue-700 font-medium' : 'text-gray-600 hover:text-gray-900 bg-gray-100')}
+                      aria-label="Switch to English"
+                      aria-pressed={language === 'en'}
                     >
                       English
                     </button>
@@ -181,6 +190,8 @@ const Header: React.FC = () => {
                         closeMobileMenu();
                       }}
                       className={'px-3 py-1 text-sm rounded transition-colors ' + (language === 'ar' ? 'bg-blue-100 text-blue-700 font-medium' : 'text-gray-600 hover:text-gray-900 bg-gray-100')}
+                      aria-label="Switch to Arabic"
+                      aria-pressed={language === 'ar'}
                     >
                       العربية
                     </button>
@@ -206,6 +217,7 @@ const Header: React.FC = () => {
                     <button
                       onClick={handleLogout}
                       className="w-full text-left px-3 py-2 rounded-md text-base font-medium text-red-600 hover:text-red-800 hover:bg-red-50 transition-colors"
+                      aria-label="Logout from account"
                     >
                       {t('header.logout')}
                     </button>

@@ -6,7 +6,8 @@ import CouponCard from '../components/CouponCard';
 import { 
   MapPinIcon, 
   ArrowLeftIcon,
-  MagnifyingGlassIcon 
+  MagnifyingGlassIcon,
+  GlobeAltIcon
 } from '@heroicons/react/24/outline';
 import { logger } from '../utils/logger';
 
@@ -15,6 +16,7 @@ const LocationCouponsPage: React.FC = () => {
   const [coupons, setCoupons] = useState<Coupon[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [includeGlobalCoupons, setIncludeGlobalCoupons] = useState(false);
 
   useEffect(() => {
     const fetchCoupons = async () => {
@@ -22,39 +24,59 @@ const LocationCouponsPage: React.FC = () => {
         setLoading(true);
         const allCoupons = await api.getAllCoupons();
         
-        // Filter coupons based on location
+        // STRICT FILTERING: Only show coupons explicitly assigned to this location
         const filtered = allCoupons.filter(coupon => {
-          // Global coupons are valid everywhere
-          if (coupon.isGlobal) return true;
+          // Handle global coupons based on user toggle
+          if (coupon.isGlobal === true) {
+            return includeGlobalCoupons; // Only show if user enabled the toggle
+          }
           
-          // Check country
-          if (country && coupon.countries && !coupon.countries.includes(country)) {
+          // If filtering by area (most specific level)
+          if (area) {
+            // Coupon MUST have this exact area explicitly listed
+            if (coupon.areas && coupon.areas.length > 0) {
+              return coupon.areas.includes(area);
+            }
+            // If no areas specified on coupon, it doesn't match this area filter
             return false;
           }
           
-          // Check city
-          if (city && coupon.cities && !coupon.cities.includes(city)) {
+          // If filtering by city (medium specificity)
+          if (city) {
+            // Coupon MUST have this exact city explicitly listed
+            if (coupon.cities && coupon.cities.length > 0) {
+              return coupon.cities.includes(city);
+            }
+            // If no cities specified on coupon, it doesn't match this city filter
             return false;
           }
           
-          // Check area
-          if (area && coupon.areas && !coupon.areas.includes(area)) {
+          // If filtering by country only (least specific)
+          if (country) {
+            // Coupon MUST have this exact country explicitly listed
+            if (coupon.countries && coupon.countries.length > 0) {
+              return coupon.countries.includes(country);
+            }
+            // If no countries specified on coupon, it doesn't match this country filter
             return false;
           }
           
+          // If no location filter is applied, show all coupons
           return true;
         });
         
         setCoupons(filtered);
+        logger.debug(`Strict filtered coupons for location (country: ${country}, city: ${city}, area: ${area}, includeGlobal: ${includeGlobalCoupons}): ${filtered.length} results`);
       } catch (error) {
         logger.error('Error fetching coupons:', error);
+        setCoupons([]);
       } finally {
         setLoading(false);
       }
     };
 
     fetchCoupons();
-  }, [country, city, area]);
+  }, [country, city, area, includeGlobalCoupons]);
 
   const filteredCoupons = coupons.filter(coupon =>
     coupon.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -114,6 +136,28 @@ const LocationCouponsPage: React.FC = () => {
               placeholder="Search deals in this location..."
               className="w-full pl-12 pr-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-200 focus:border-purple-500"
             />
+          </div>
+          
+          {/* Global Coupons Toggle */}
+          <div className="mt-4 flex items-center gap-3 bg-gradient-to-r from-blue-50 to-purple-50 px-4 py-3 rounded-xl border-2 border-blue-200">
+            <input
+              id="global-toggle"
+              type="checkbox"
+              checked={includeGlobalCoupons}
+              onChange={(e) => setIncludeGlobalCoupons(e.target.checked)}
+              className="w-5 h-5 text-purple-600 border-gray-300 rounded focus:ring-2 focus:ring-purple-500 cursor-pointer"
+            />
+            <label htmlFor="global-toggle" className="flex items-center gap-2 cursor-pointer flex-1">
+              <GlobeAltIcon className="h-5 w-5 text-blue-600" />
+              <span className="text-sm font-medium text-gray-700">
+                Also show worldwide deals (valid globally)
+              </span>
+            </label>
+            {includeGlobalCoupons && (
+              <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-medium">
+                Active
+              </span>
+            )}
           </div>
         </div>
 

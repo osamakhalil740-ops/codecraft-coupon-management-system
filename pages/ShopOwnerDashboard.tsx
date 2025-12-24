@@ -31,11 +31,8 @@ const CreateCouponForm: React.FC<{ onCouponCreated: () => void }> = ({ onCouponC
     const [affiliateCommission, setAffiliateCommission] = useState(5);
     const [customerRewardPoints, setCustomerRewardPoints] = useState(10);
     
-    // Location states
-    const [countries, setCountries] = useState<string[]>([]);
-    const [cities, setCities] = useState<string[]>([]);
-    const [areas, setAreas] = useState<string[]>([]);
-    const [isGlobal, setIsGlobal] = useState(true); // Default to global
+    // NEW: Only "Valid Globally" toggle - location comes from shop owner profile
+    const [isGlobal, setIsGlobal] = useState(false); // Default to shop location
     
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState('');
@@ -66,6 +63,7 @@ const CreateCouponForm: React.FC<{ onCouponCreated: () => void }> = ({ onCouponC
             }
 
             // Prepare coupon data with proper sanitization
+            // IMPORTANT: Location comes from shop owner's profile, not from form
             const rawCouponData: Partial<CreateCouponData> = {
                 shopOwnerId: user.id,
                 title: title.trim(),
@@ -78,9 +76,7 @@ const CreateCouponForm: React.FC<{ onCouponCreated: () => void }> = ({ onCouponC
                 validityDays: validityType === 'days' ? validityDays : undefined,
                 affiliateCommission,
                 customerRewardPoints,
-                countries: isGlobal ? [] : countries,
-                cities: isGlobal ? [] : cities,
-                areas: isGlobal ? [] : areas,
+                // Location is determined by shop owner's profile and isGlobal flag
                 isGlobal: isGlobal
             };
 
@@ -102,10 +98,7 @@ const CreateCouponForm: React.FC<{ onCouponCreated: () => void }> = ({ onCouponC
             // Reset form
             setTitle('');
             setDescription('');
-            setCountries([]);
-            setCities([]);
-            setAreas([]);
-            setIsGlobal(true);
+            setIsGlobal(false); // Reset to shop location
             
             // Show success feedback
             alert('✅ Coupon created successfully! It should appear in your list shortly.');
@@ -193,23 +186,33 @@ const CreateCouponForm: React.FC<{ onCouponCreated: () => void }> = ({ onCouponC
                 <p className="text-xs text-gray-500 mt-1">Points credited to customer when they redeem this coupon</p>
             </div>
 
-            {/* Location Selector */}
+            {/* Valid Globally Toggle */}
             <div className="border-t pt-4">
-                <label className="block text-sm font-semibold text-gray-700 mb-3">
-                    🌍 Coupon Location Settings
-                </label>
-                <LocationSelector
-                    selectedCountries={countries}
-                    selectedCities={cities}
-                    selectedAreas={areas}
-                    isGlobal={isGlobal}
-                    onChange={(locationData) => {
-                        setCountries(locationData.countries);
-                        setCities(locationData.cities);
-                        setAreas(locationData.areas);
-                        setIsGlobal(locationData.isGlobal);
-                    }}
-                />
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <div className="flex items-start gap-3">
+                        <input
+                            type="checkbox"
+                            id="isGlobal"
+                            checked={isGlobal}
+                            onChange={(e) => setIsGlobal(e.target.checked)}
+                            className="mt-1 h-5 w-5 text-primary rounded focus:ring-primary"
+                        />
+                        <div className="flex-1">
+                            <label htmlFor="isGlobal" className="block text-sm font-semibold text-gray-800 cursor-pointer">
+                                🌍 Valid Globally
+                            </label>
+                            <p className="text-xs text-gray-600 mt-1">
+                                {isGlobal 
+                                    ? '✅ This coupon will be valid worldwide for all locations'
+                                    : `📍 This coupon will be valid only in your shop location: ${user.city}, ${user.country}${user.district ? `, ${user.district}` : ''}`
+                                }
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <p className="text-xs text-gray-500 mt-2">
+                    💡 <strong>Tip:</strong> Uncheck to limit the coupon to your shop's location. Check to make it available globally.
+                </p>
             </div>
 
             {error && <p className="text-alert text-sm">{error}</p>}

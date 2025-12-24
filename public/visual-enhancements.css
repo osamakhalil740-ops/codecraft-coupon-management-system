@@ -7,7 +7,7 @@
    1. ENHANCED TYPOGRAPHY SYSTEM
    ======================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&display=swap');
+/* Fonts preloaded in index.html - no import needed */
 
 :root {
   /* Typography Scale */
@@ -316,7 +316,7 @@ button::after,
   color: var(--color-primary-700);
 }
 
-/* Icon Bounce */
+/* Icon Bounce - Optimized with will-change */
 @keyframes icon-bounce {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-5px); }
@@ -324,9 +324,10 @@ button::after,
 
 .icon-bounce {
   animation: icon-bounce 1s ease-in-out infinite;
+  will-change: transform;
 }
 
-/* Icon Pulse */
+/* Icon Pulse - Optimized with will-change */
 @keyframes icon-pulse {
   0%, 100% { transform: scale(1); opacity: 1; }
   50% { transform: scale(1.1); opacity: 0.8; }
@@ -334,6 +335,13 @@ button::after,
 
 .icon-pulse {
   animation: icon-pulse 2s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+/* Remove will-change after page load */
+.animations-loaded .icon-bounce,
+.animations-loaded .icon-pulse {
+  will-change: auto;
 }
 
 /* ========================================

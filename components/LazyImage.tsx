@@ -35,13 +35,22 @@ const LazyImage: React.FC<LazyImageProps> = memo(({
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setImageSrc(src);
+            // Preload the image before setting it
+            const img = new Image();
+            img.src = src;
+            img.onload = () => {
+              setImageSrc(src);
+            };
+            img.onerror = () => {
+              setHasError(true);
+              setImageSrc(placeholder);
+            };
             observer.disconnect();
           }
         });
       },
       {
-        rootMargin: '50px', // Start loading 50px before image enters viewport
+        rootMargin: '50px', // Reduced for better LCP
         threshold: 0.01
       }
     );
@@ -51,7 +60,7 @@ const LazyImage: React.FC<LazyImageProps> = memo(({
     return () => {
       observer.disconnect();
     };
-  }, [src]);
+  }, [src, placeholder]);
 
   const handleLoad = () => {
     setIsLoaded(true);
@@ -71,8 +80,11 @@ const LazyImage: React.FC<LazyImageProps> = memo(({
       className={`${className} ${isLoaded ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}
       onLoad={handleLoad}
       onError={handleError}
-      loading="lazy"
-      decoding="async"
+      loading=\"lazy\"
+      decoding=\"async\"
+      width=\"auto\"
+      height=\"auto\"
+      style={{ contentVisibility: 'auto' }}
     />
   );
 });

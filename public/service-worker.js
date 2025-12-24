@@ -1,10 +1,13 @@
-const CACHE_NAME = 'kobonz-v2';
-const CACHE_TIMEOUT = 3000; // 3 seconds timeout for cache requests
+const CACHE_NAME = 'kobonz-v3-mobile';
+const CACHE_TIMEOUT = 5000; // 5 seconds timeout for mobile networks
 
-// Only cache static assets, not HTML pages
+// Cache static assets for faster mobile loading
 const urlsToCache = [
   '/manifest.json',
   '/favicon.svg',
+  '/index.css',
+  '/robots.txt',
+  '/sitemap.xml'
 ];
 
 self.addEventListener('install', (event) => {
@@ -14,7 +17,7 @@ self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(urlsToCache).catch(err => {
-        console.warn('Cache initialization failed:', err);
+        // Cache initialization failed - silent fail
       });
     })
   );
@@ -24,7 +27,7 @@ self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
   
-  // Don't cache HTML pages - always fetch fresh
+  // Don't cache HTML pages or API calls - always fetch fresh
   if (request.method !== 'GET' || 
       url.pathname.endsWith('.html') || 
       url.pathname === '/' ||
@@ -34,31 +37,57 @@ self.addEventListener('fetch', (event) => {
     return event.respondWith(fetch(request));
   }
   
-  // Network-first strategy for everything else with timeout
-  event.respondWith(
-    Promise.race([
-      fetch(request).then(response => {
-        // Cache successful responses
-        if (response && response.status === 200) {
-          const responseClone = response.clone();
-          caches.open(CACHE_NAME).then(cache => {
-            cache.put(request, responseClone);
-          });
+  // Cache-first strategy for static assets (CSS, JS, images) - better for mobile
+  if (url.pathname.match(/\.(css|js|png|jpg|jpeg|svg|webp|woff|woff2|ttf|otf)$/)) {
+    event.respondWith(
+      caches.match(request).then(cachedResponse => {
+        if (cachedResponse) {
+          // Update cache in background
+          fetch(request).then(response => {
+            if (response && response.status === 200) {
+              caches.open(CACHE_NAME).then(cache => {
+                cache.put(request, response);
+              });
+            }
+          }).catch(() => {});
+          return cachedResponse;
         }
-        return response;
-      }).catch(() => {
-        // If network fails, try cache
-        return caches.match(request);
-      }),
-      // Timeout fallback
-      new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('timeout')), CACHE_TIMEOUT)
-      ).catch(() => caches.match(request))
-    ]).catch(() => {
-      // Ultimate fallback
-      return new Response('Offline', { status: 503, statusText: 'Service Unavailable' });
-    })
-  );
+        
+        // Not in cache, fetch and cache
+        return fetch(request).then(response => {
+          if (response && response.status === 200) {
+            const responseClone = response.clone();
+            caches.open(CACHE_NAME).then(cache => {
+              cache.put(request, responseClone);
+            });
+          }
+          return response;
+        }).catch(() => {
+          return new Response('Offline', { status: 503 });
+        });
+      })
+    );
+  } else {
+    // Network-first for other requests with timeout
+    event.respondWith(
+      Promise.race([
+        fetch(request).then(response => {
+          if (response && response.status === 200) {
+            const responseClone = response.clone();
+            caches.open(CACHE_NAME).then(cache => {
+              cache.put(request, responseClone);
+            });
+          }
+          return response;
+        }).catch(() => caches.match(request)),
+        new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('timeout')), CACHE_TIMEOUT)
+        ).catch(() => caches.match(request))
+      ]).catch(() => {
+        return new Response('Offline', { status: 503 });
+      })
+    );
+  }
 });
 
 self.addEventListener('activate', (event) => {

@@ -47,10 +47,13 @@ export interface Coupon {
   customerRewardPoints: number; // Points awarded to customer who redeems
   
   // Location fields for coupon filtering
+  // These are automatically set from shop owner's location (country, city, district)
+  // isGlobal = true means coupon is valid worldwide (countries/cities/areas will be empty)
+  // isGlobal = false means coupon is valid only at shop's location
   countries?: string[]; // List of countries where coupon is valid, empty = global
   cities?: string[]; // Specific cities where valid
   areas?: string[]; // Specific areas/districts where valid
-  isGlobal?: boolean; // If true, valid everywhere
+  isGlobal?: boolean; // If true, valid everywhere; if false, valid only at shop location
 }
 
 export interface CreateCouponData {
@@ -76,11 +79,13 @@ export interface CreateCouponData {
   affiliateCommission: number;
   customerRewardPoints: number;
   creationCost?: number; // Cost to create this coupon
-  // Location fields
+  // Location: Determined by shop owner's profile + isGlobal flag
+  // countries, cities, areas are set automatically based on shop owner's location
+  // They are NOT provided by the coupon creation form
   countries?: string[];
   cities?: string[];
   areas?: string[];
-  isGlobal?: boolean;
+  isGlobal?: boolean; // Only field provided by user: true = global, false = shop location
 }
 
 /**

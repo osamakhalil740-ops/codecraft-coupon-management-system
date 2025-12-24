@@ -6,23 +6,36 @@
 import * as Sentry from '@sentry/react';
 import { IS_PROD, IS_DEV } from './constants';
 
-// Sentry Configuration
+// Add global flag to prevent double initialization
+declare global {
+  interface Window {
+    __SENTRY_INITIALIZED__?: boolean;
+    gtag?: (...args: any[]) => void;
+  }
+}
+
+// Sentry Configuration - Lazy loaded for performance
 export const initSentry = () => {
-  if (IS_PROD) {
+  // Only initialize in production and if not already initialized
+  if (IS_PROD && !window.__SENTRY_INITIALIZED__) {
+    window.__SENTRY_INITIALIZED__ = true;
     Sentry.init({
       dsn: import.meta.env.VITE_SENTRY_DSN || '',
       integrations: [
-        Sentry.browserTracingIntegration(),
+        Sentry.browserTracingIntegration({
+          // Reduce performance overhead
+          tracingOrigins: ['localhost', /^\//],
+        }),
         Sentry.replayIntegration({
           maskAllText: true,
           blockAllMedia: true,
         }),
       ],
-      // Performance Monitoring
-      tracesSampleRate: 1.0,
-      // Session Replay
-      replaysSessionSampleRate: 0.1,
-      replaysOnErrorSampleRate: 1.0,
+      // Performance Monitoring - reduced for better performance
+      tracesSampleRate: 0.1, // Sample only 10% of transactions
+      // Session Replay - reduced sampling
+      replaysSessionSampleRate: 0.01, // Only 1% of sessions
+      replaysOnErrorSampleRate: 0.5, // 50% of error sessions
       // Environment
       environment: IS_PROD ? 'production' : 'development',
       // Release tracking
@@ -190,9 +203,3 @@ export class PerformanceMonitor {
 
 export const performanceMonitor = new PerformanceMonitor();
 
-// Extend Window interface for gtag
-declare global {
-  interface Window {
-    gtag?: (...args: any[]) => void;
-  }
-}

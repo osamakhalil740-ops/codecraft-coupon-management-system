@@ -730,6 +730,7 @@ export const api = {
             });
 
             // Create the coupon with sanitized data - guaranteed no undefined values
+            // IMPORTANT: Location is determined from shop owner's profile
             const rawCouponData = {
                 ...sanitizedData,
                 shopOwnerName: shopOwner.name,
@@ -738,6 +739,10 @@ export const api = {
                 creationCost: couponCost,
                 createdAt: serverTimestamp(),
                 expiryDate: sanitizedData.expiryDate ? Timestamp.fromDate(new Date(sanitizedData.expiryDate)) : null,
+                // Set location based on isGlobal flag and shop owner's location
+                countries: sanitizedData.isGlobal ? [] : [shopOwner.country],
+                cities: sanitizedData.isGlobal ? [] : [shopOwner.city],
+                areas: sanitizedData.isGlobal ? [] : (shopOwner.district ? [shopOwner.district] : []),
             };
             
             // FINAL SAFETY CHECK: Validate data before sending to Firebase

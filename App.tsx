@@ -16,15 +16,16 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 
 // Lazy loaded pages (code splitting for better performance)
-const ShopOwnerDashboard = lazy(() => import('./pages/ShopOwnerDashboard'));
-const AffiliateDashboard = lazy(() => import('./pages/AffiliateDashboard'));
-const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
-const UserDashboard = lazy(() => import('./pages/UserDashboard'));
+// Use webpackPrefetch for likely-to-navigate pages
+const ShopOwnerDashboard = lazy(() => import(/* webpackPrefetch: true */ './pages/ShopOwnerDashboard'));
+const AffiliateDashboard = lazy(() => import(/* webpackPrefetch: true */ './pages/AffiliateDashboard'));
+const AdminDashboard = lazy(() => import(/* webpackPrefetch: true */ './pages/AdminDashboard'));
+const UserDashboard = lazy(() => import(/* webpackPrefetch: true */ './pages/UserDashboard'));
 const SuperAdminDashboard = lazy(() => import('./pages/SuperAdminDashboard'));
 const ValidationPortalPage = lazy(() => import('./pages/ValidationPortalPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 const ReferralHandlerPage = lazy(() => import('./pages/ReferralHandlerPage'));
-const MarketplacePage = lazy(() => import('./pages/MarketplacePage'));
+const MarketplacePage = lazy(() => import(/* webpackPrefetch: true */ './pages/MarketplacePage'));
 const PartnerPage = lazy(() => import('./pages/PartnerPage'));
 const AffiliateNetworkPage = lazy(() => import('./pages/AffiliateNetworkPage'));
 const LegalPage = lazy(() => import('./pages/LegalPage'));
